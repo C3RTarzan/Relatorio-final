@@ -1,0 +1,223 @@
+@import './global.scss';
+
+
+body {
+    justify-content: center;
+    align-items: center;
+    header{
+        padding: 10px;
+        overflow-y: auto;
+        width: 400px;
+        height: 100%;
+        background-color: $dark3;
+        border-right: solid 1px $dark1;
+        flex-direction: column;
+        .dataInput{
+            margin: 20px 0;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            .types{
+                font-weight: 600;
+                margin: 5px 0;
+            }
+            .collections{
+
+            }
+        }
+        .button{
+            position: relative;
+            width: 100%;
+            height: auto;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            button{
+                width: 150px;
+                border: none;
+                background-color: $corbutton;
+                padding: 10px 20px;
+                color: $corspan;
+                font-size: 18px;
+                font-weight: 600;
+                border-radius: 5px;
+                cursor: pointer;
+                margin-bottom: 20px;
+                &:hover{
+                    background-color: #1523b8;
+                }
+            } 
+            .buttonsole{
+                margin-bottom: 10px;
+                width: 200px;
+            }
+            input{
+                text-align: center;
+            }
+            
+            .collectSelectName{
+                appearance: none;
+                height: 25px;
+                margin-bottom: 10px;
+                width: 150px;
+                text-align: center;
+                background-color: white;
+                border: none;
+                border-radius: 3px;
+                cursor: pointer;
+                option{
+                }
+            }
+            .icon{
+                position: absolute;
+                top: 0px;
+                left: 0px;
+                font-size: 30px;
+                color: $corspan;
+                cursor: pointer;
+                &:hover{
+                    opacity: .8;
+                }
+            }
+        }
+    }
+    main{
+        overflow-y: auto;
+        width: calc(100% - 400px);
+        height: 100%;
+        background-color: $dark3;
+        .help{
+            position: absolute;
+            right: 10px;
+            width: 90px;
+            height: min-content;
+            border: none;
+            color: $corspan;
+            text-decoration: underline;
+            cursor: pointer;
+            background-color: rgba(0, 0, 0, 0);
+            font-weight: 600;
+            &:hover{
+                
+            }
+        }
+    }
+}
+
+.config{
+    padding: 0 10px;
+    position: absolute;
+    top: -600px;
+    z-index: 10;
+    justify-content: center;
+    align-items: center;
+    width: 800px;
+    height: 400px;
+    background-color: $dark1;
+    box-shadow: 0 0 2px rgb(0, 0, 0);
+    border-radius: 10px;
+    span{
+        color: $corspan;
+    }
+    .iconClosed{
+        position: absolute;
+        right: -10px;
+        top: -10px;
+        font-size: 40px;
+        color: rgb(236, 49, 25);
+        cursor: pointer;
+    }
+    .namesUsers{
+        width: 50%;
+        height: 100%;
+        flex-direction: column;
+        overflow-y: auto;
+        padding: 10px 10px 10px 0;
+        div{
+            padding: 5px;
+            background-color: $dark2;
+            margin-bottom: 10px;
+            font-size: 20px;
+            border: solid 1.5px rgb(32, 32, 32);
+            padding-left: 10px;
+            border-radius: 3px;
+            justify-content: space-between;
+            align-items: center;
+            span{
+                width: 90%;
+            }
+            .iconDelet{
+                width: auto;
+                font-size: 25px;
+                cursor: pointer;
+                color: $corspan;
+            }
+        }
+    }
+    .nameAdd{
+        width: 50%;
+        height: 100%;
+        flex-direction: column;
+        form{
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            span{
+                font-weight: 600;
+                font-size: 20px;
+                margin-bottom: 10px;
+            }
+            input{
+                width: 250px;
+                font-size: 18px;
+                height: 30px;
+                border-radius: 2px;
+                text-align: center;
+                margin-bottom: 30px;
+            }
+            button{
+                width: 150px;
+                height: 35px;
+                border: none;
+                border-radius: 5px;
+                background-color: $corbutton;
+                font-size: 18px;
+                color: white;
+                cursor: pointer;
+                &:hover{
+                    opacity: .8;
+                }
+            }
+        }
+    }
+    ::-webkit-scrollbar {
+        width: 8px;
+        background: #000000;
+        cursor: pointer;
+      }
+      
+    ::-webkit-scrollbar-thumb {
+        background: #f0f0f0;
+        border-radius: 0px;
+        cursor: pointer;
+    }
+}
+.errorBox{
+    position: absolute;
+    width: 100%;
+    min-height: 50px;
+    text-align: center;
+    background-color: rgb(234, 61, 61);
+    top: 0;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 25px;
+    font-weight: 600;
+    .error{
+
+    }
+}

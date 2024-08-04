@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./assets/css/index.css">
+    <script src="./scripts/index.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <link rel="icon" href="./assets/icon/logo.ico" type="image/x-icon">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js" integrity="sha256-c9vxcXyAG4paArQG3xk6DjyW/9aHxai2ef9RpMWO44A=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.min.js"></script>
+    
+    <title>Relatório Finla</title>
+</head>
+<body>
+    <body>
+        <div class="config">
+            <iconify-icon onclick="configOpen()" class="iconClosed" icon="ph:x-circle-fill"></iconify-icon>
+            <div class="namesUsers">
+    
+            </div>
+            <div class="nameAdd">
+                <form action="" onsubmit="return false">
+                    <span>Nome</span>
+                    <input type="text" class="userADD" placeholder="Digite seu Nome">
+                    <button onclick="addUser()">Adicionar</button>
+                </form>
+            </div>
+        </div>
+        <header>
+            <div class="button">
+                <iconify-icon onclick="configOpen()" class="icon iconOpen" icon="ph:gear-six-fill"></iconify-icon>
+                <button onclick='getData()'>Gerar</button>
+                <select class="collectSelectName" name="collectName">
+                    <option value="0">Escolher</option>
+                </select>
+                <input type="text" placeholder="Nome" id="name">
+            </div>
+            <div class="dataInput">
+                <span class="types">Dados Principais</span>
+                <textarea class="collections" id="data1"></textarea>
+            </div>
+            <div class="dataInput">
+                <span class="types">Dados Tickets</span>
+                <textarea class="collections" id="data2"></textarea>
+            </div>
+        </header>
+        <main>
+        <button class="help" onclick="redirectHelp()">AJUDA</button>
+
+        <div class="finalRelationship">
+            <div class="header">
+
+            </div>
+        </div>
+
+        </main>
+    </body>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajuda</title>
+    <link rel="stylesheet" href="../assets/css/help.css">
+    <link rel="icon" href="../assets/icon/logo.ico" type="image/x-icon">
+</head>
+<body>
+    <div class="help">
+        <button class="help" onclick="redirectHelp()">VOLTAR</button>
+        <span class="tt">Você está com duvidas??</span>
+        <div class="topic">
+            <div class="title">
+                <span>Quais dados devo colocar?</span>
+            </div>
+            <div class="description">
+                <span>
+                    <span class="dt">Nome</span> ( nome de quem esta fazendo o relatório ).<br><br>
+                    <span class="dt">Horário</span> ( referente a hora em que o caminhão chegou a base, essa informação está na foto tirada do caminhão ).<br><br>
+                    <span class="dt">Data chegou</span> ( refere-se a data que o caminhao chegou a base, essa informação está na foto tirada do caminhao ).<br><br>
+                    <span class="dt">Data prioridade</span> ( a data da prioridade é referente as encomendas que estão mais perto do prazo, normalmente no dia seguinte a <span class="dt">Data chegou</span>).<br><br>
+                    <span class="dt">Coleta STD/Coleta EXP</span> ( é o número da coleta encontrada no ICS que é usado para baixar o relatório).<br><br>
+                    <span class="dt">VRID/Qntd folha</span> ( essas informações ficam anexadas a folha entregue pelo motorista, e são usadas para gerar as mensagens).<br><br>
+                </span>
+            </div>
+        </div>
+        <div class="topic">
+            <div class="title">
+                <span>Quais dados devo colocar na coleta?</span>
+            </div>
+            <div class="description">
+                <span>
+                    <span class="dt">Rotas</span> ( Rota da encomenda ex: 74-AJU-SE-LOC-[30A] ).<br><br>
+                    <span class="dt">Tipo</span> ( é a prioridade da entrega do produto, podendo variar de '0' STD, '6' EXP ).<br><br>
+                    <span class="dt">Data</span> ( data de promessa de entrega, a data prevista para a entregar o produto. ).<br><br>
+                    <span class="dt">IMPORTANTE</span><br><br> Ao copiar os dados ( direto da planilha ),
+                    nao deve haver nenhum dado que não seja os mencionados a cima,
+                    ( normalmente quando baixado o relatório, a 1° linha ficam os títulos das colunas,
+                    e não devem ser copiados para que não haja conflitos e que o relatório fique o
+                    mais certo possível ).<br><br>
+                </span>
+            </div>
+        </div>
+
+        <div class="topic">
+            <div class="title">
+                <span>Qual Coleta devo Marcar?</span>
+            </div>
+            <div class="description">
+                <span>
+                    <span class="dt">Todas coletas</span> ( Essa opção serve tanto para quando tiver somente 1 coleta quento se tiver mais coletas,
+                    ela vai retornar os dados somados de todas as coletas existentes, tanto a quantidade dos Itens/Tabela/Gráfico, quanto as mensagens prontas).<br><br>
+                    <span class="dt">Coleta individual</span> ( A coleta individua 'Coleta 1, Coleta 2, Coleta 3, ....', serve para filtrar os(as) Itens/Tabela/Gráfico quanto as mensagens prontas apenas da coleta selecionada).<br><br>
+                    <span class="dt">IMPORTANTE</span><br><br>Para garantir a integridade e precisão dos registros, siga rigorosamente esta orientação ao preencher as coletas: <br><br>
+
+                    <span class="dt">Coleta 1:</span> Nesta coleta, você é obrigado a inserir os dados necessários.<br><br>
+                    
+                    <span class="dt">Coleta 2:</span> A Coleta 2 é opcional, mas, caso você escolha preenchê-la, certifique-se de que ela siga a sequência após a Coleta 1.<br><br>
+                    
+                    <span class="dt">Coleta 3:</span> Da mesma forma, a Coleta 3 também é opcional, mas, se preenchida, deve seguir após a Coleta 2.<br><br>
+                    
+                    Por favor, assegure-se de manter a sequência rigorosa apenas para a Coleta 1. As outras coletas são opcionais, mas, se preenchidas, devem seguir a ordem.<br><br>
+                    
+                    Caso tenha alguma pergunta ou necessite de auxílio adicional, não hesite em entrar em contato com  <span class="dt">Alan Henrique Silva</span>.<br><br>
+                </span>
+            </div>
+        </div>
+    </div>
+    <script src="../scripts/help.js"></script>
+</body>
+</html>

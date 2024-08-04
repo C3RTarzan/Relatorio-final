@@ -1,0 +1,67 @@
+@import './global';
+@import './color';
+
+.help{
+    position: relative;
+    padding: 10px;
+    overflow-y: scroll;
+    width: 100%;
+    height: 100%;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+    .tt{
+        font-size: 20px;
+        font-weight: 700;
+        margin-bottom: 25px;
+        color: aliceblue;
+    }
+    .topic{
+        max-width: 80%;
+        border: solid 2px $dark1;
+        border-radius: 10px;
+        flex-direction: column;
+        margin-bottom: 20px;
+        .title{
+            justify-content: center;
+            margin: 10px 0 20px 0;
+            span{
+                font-size: 20px;
+                font-weight: 600;
+                color: rgb(0, 0, 0);
+                background-color: white;
+                padding: 15px 30px;
+                border-radius: 5px;
+            }
+        }
+        .description{
+            margin: 5px;
+            span{
+                text-align: center;
+                color: rgba(255,255,255,.6);
+                .dt{
+                    opacity: 1;
+                    color: rgb(255, 255, 255);
+                    font-weight: 600;
+                }
+            }
+        }
+    }
+    .help{
+        overflow: hidden;
+        position: absolute;
+        left: 10px;
+        width: 90px;
+        height: 30px;
+        justify-content: center;
+        align-items: center;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        background-color: $corspan;
+        font-weight: 600;
+        &:hover{
+            background-color: white;
+        }
+    }
+}
