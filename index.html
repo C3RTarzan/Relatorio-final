@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,17 +13,20 @@
     <link rel="icon" href="./assets/icon/logo.ico" type="image/x-icon">
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js" integrity="sha256-c9vxcXyAG4paArQG3xk6DjyW/9aHxai2ef9RpMWO44A=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js"
+        integrity="sha256-c9vxcXyAG4paArQG3xk6DjyW/9aHxai2ef9RpMWO44A=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.min.js"></script>
-    
+
     <title>Relatório Finla</title>
 </head>
+
 <body>
+
     <body>
         <div class="config">
             <iconify-icon onclick="configOpen()" class="iconClosed" icon="ph:x-circle-fill"></iconify-icon>
             <div class="namesUsers">
-    
+
             </div>
             <div class="nameAdd">
                 <form action="" onsubmit="return false">
@@ -42,28 +46,137 @@
                 <input type="text" placeholder="Nome" id="name">
             </div>
             <div class="dataInput">
-                <span class="types">Dados Principais</span>
+                <span class="types">Dados Principais
+                    <div>
+                        <span class="typesSub">AWB | Rota | ID do embarque | ID da caf | Descrição do status | Nome do
+                            Motorista</span>
+                    </div>
+                </span>
+
                 <textarea class="collections" id="data1"></textarea>
             </div>
             <div class="dataInput">
-                <span class="types">Dados CAF</span>
+                <span class="types">Dados CAF
+                    <div>
+                        <span class="typesSub">AWB | Rota | ID do embarque | ID da caf | Descrição do status | Nome do
+                            Motorista</span>
+                    </div>
+                </span>
                 <textarea class="collections" id="data2"></textarea>
             </div>
             <div class="dataInput">
-                <span class="types">Dados Tickets</span>
+                <span class="types">Dados Tickets
+                    <div>
+                        <span class="typesSub">AWB | Descrição do Ticket</span>
+                    </div>
+                </span>
                 <textarea class="collections" id="data3"></textarea>
             </div>
         </header>
         <main>
-        <button class="help" onclick="redirectHelp()">AJUDA</button>
-
-        <div class="finalRelationship">
-            <div class="header">
+            <button class="help" onclick="redirectHelp()">AJUDA</button>
+            <div class="inffo">
 
             </div>
-        </div>
-
+            <div class="graphic">
+                <div class="sheet">
+                    <div class="herderSheet">
+                        <div class="logo">
+                            <div class="bgImage">
+                                <img src="/assets/img/logoTotal.png" alt="">
+                            </div>
+                        </div>
+                        <div class="title">
+                            <span>RELATÓRIO DE CONTROLE</span>
+                            <span>TERCEIRO TURNO</span>
+                        </div>
+                        <div class="date">
+                            <span>08/08</span>
+                        </div>
+                    </div>
+                    <div class="mainSheet">
+                        <div class="headerMainSheet">
+                            <div class="bcRouter">
+                                <span>ROTA</span>
+                            </div>
+                            <div class="bcAggregate">
+                                <span>AGREGADO</span>
+                            </div>
+                            <div class="bcCAF">
+                                <span>CAF</span>
+                            </div>
+                            <div class="bcAmount">
+                                <span>QTD</span>
+                            </div>
+                            <div class="bcState">
+                                <span>STATUS</span>
+                            </div>
+                            <div class="bcSituation">
+                                <span>SITUAÇÃO</span>
+                            </div>
+                        </div>
+                        <div class="added">
+                            <div class="bcRouter">
+                                <span>01A</span>
+                            </div>
+                            <div class="bcAggregate">
+                                <span>MARCONDES DE OLIVEIRA FEITOSA CARDOSO</span>
+                            </div>
+                            <div class="bcCAF">
+                                <span>16372518</span>
+                            </div>
+                            <div class="bcAmount">
+                                <span>158</span>
+                            </div>
+                            <div class="bcState">
+                                <span>AUDITADA</span>
+                            </div>
+                            <div class="bcSituation">
+                                <span>Confirmado</span>
+                            </div>
+                        </div>
+                        <div class="added addedBG">
+                            <div class="bcRouter">
+                                <span>02A</span>
+                            </div>
+                            <div class="bcAggregate">
+                                <span>MARCONDES DE OLIVEIRA FEITOSA CARDOSO</span>
+                            </div>
+                            <div class="bcCAF">
+                                <span>16372518</span>
+                            </div>
+                            <div class="bcAmount">
+                                <span>158</span>
+                            </div>
+                            <div class="bcState">
+                                <span>AUDITADA</span>
+                            </div>
+                            <div class="bcSituation">
+                                <span>Confirmado</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="footerSheet">
+                        <div class="volumefooter">
+                            <span>VOLUMES EM CAF: 1520</span>
+                        </div>
+                        <div class="Madefooter">
+                            <span>CAF’S FEITAS: 12</span>
+                        </div>
+                        <div class="auditedfooter">
+                            <span>CAF’S AUDITADA: 12</span>
+                        </div>
+                        <div class="issuedfooter">
+                            <span>CAF’S EXPEDIDAS: 12</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="message">
+                
+            </div>
         </main>
     </body>
 </body>
+
 </html>

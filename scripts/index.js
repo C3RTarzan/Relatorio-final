@@ -151,28 +151,49 @@ function selectName() {
 //: --- Main ---
 function getData() {
 
-    const mainData = document.querySelector("#data1").value;
-    const cafData = document.querySelector("#data2").value;
-    const ticketsData = document.querySelector("#data3").value;
+    const mainData = document.querySelector("#data1").value; //@ Get data from part
+    const cafData = document.querySelector("#data2").value; //@ Get data from caf
+    const ticketsData = document.querySelector("#data3").value; //@ Get data from ticket
+
+    const mainDataObject = createObjectData(mainData, true) //@ Create part list
+    const mianSecDataObject = createObjectData(cafData, false) //@ Create part secondary list  
+    const ticketsDataObject = createObjectTickets(ticketsData) //@ Create ticket list
+
+    const removeRouteStateData = RemoveState(mainDataObject) //@ Remove parameter from "FOR" from "Data"
+    const removeRouteStateSecData = RemoveState(mianSecDataObject) //@ Remove parameter from "FOR" from "secData"
     
-    const mainDataObject = createObjectData(mainData)
-    const ticketsDataObject = createObjectTickets(ticketsData)
+    const completeData = mainWithCAF(removeRouteStateData, removeRouteStateSecData) //@ Join the primary data with the secondary data
 
-    const toCheckTicket = TicketChecker(mainDataObject, ticketsDataObject)
+    const toCheckTicket = TicketChecker(completeData || removeRouteStateData, ticketsDataObject); //@ Verify is audited
 
-    const cafListMade = getCafs(toCheckTicket)
+    const cardsTreatment = recoveryCards(toCheckTicket) //@ Remove part cards (parts, cards)
 
-    const sates = getStateAvailable(mainData) // Take status available
-    //console.log(sates);
+    const cafListMade = getCafs(cardsTreatment) //@ Create object with the CAF's
+    const orders = alphabeticalOrdering(cafListMade) //@ Orvernment by alphabetical order
 
-    console.log(cafListMade);
+    const sates = getStateAvailable(mainData) //? Valid states of the pieces
+
+    console.log(orders); //? Console Debugging
 }
 
-function createObjectData(data) {
-    if(data === "") {
+function createObjectData(data, verification) {
+
+    let tipyData = "";
+
+    if(verification){
+        tipyData = "Dados Principais"
+    }else{
+        tipyData = "Dados CAF"
+    }
+
+    if (data === "" && verification) {
         errorHandling(
-            "Por favor, preencha o campo 'Dados Principais'."
+            `Por favor, preencha o campo '${tipyData}'.`
         )
+        return
+    }
+
+    if(data === "" && !verification){
         return
     }
 
@@ -180,6 +201,10 @@ function createObjectData(data) {
     function extractRouterValue(router) {
         const match = router.match(/\[(.*?)\]/);
         return match ? match[1] : '';
+    }
+    function extractRouterStateValue(router){
+        const state = router.split("-")    
+        return state[1]
     }
 
     // Check if date is a string and converts to an array
@@ -200,20 +225,22 @@ function createObjectData(data) {
     if (hasHeader) {
         data.shift();
     }
-
+    
     // Turning data into validation objects
     return data.map(line => {
         const parts = line.split('\t');
         
+        
+
         // Checks if the line has at least 6 parts (including the 'driver' field and the 'state' field prior to it)
         if (parts.length < 5) {
             errorHandling(
-                "Os dados fornecidos no campo 'Dados Principais' são inválidos. Por favor, verifique e corrija as informações antes de enviar.",
-                new Error(`Invalid line format: ${line}`)
+                `Os dados fornecidos no campo '${tipyData}' são inválidos. Por favor, verifique e corrija as informações antes de enviar.`, `O argumento '${line}' é inválido no ${tipyData}. Por favor, verifique e tente novamente ( Argumentos válidos: AWB, Rota, ID do embarque, ID da caf, Descrição do status, Nome do Motorista ).`
             );
             return null; // Returns null to indicate invalid line
         }
 
+        
         const [awb, router, boarding, caf, state, driver] = parts;
         return {
             AWB: awb,
@@ -222,13 +249,14 @@ function createObjectData(data) {
             CAF: caf,
             state: state,
             driver: driver,
-            ticket: ""
+            ticket: "",
+            routerState: extractRouterStateValue(router)
         };
     }).filter(item => item !== null);
 }
 
 function createObjectTickets(data) {
-    if(data === '') return;
+    if(isEmptyOrUndefined(data)) return
 
     // Check if date is a string and converts to an array
     if (typeof data === 'string') {
@@ -252,30 +280,54 @@ function createObjectTickets(data) {
     // Turning data into validation objects
     return data.map(line => {
         const parts = line.split('\t');
-        
+
         // Check if the line has at least 2 parts
         if (parts.length < 2) {
             errorHandling(
-                "Os dados fornecidos no campo 'Dados Tickets' são inválidos. Por favor, verifique e corrija as informações antes de enviar.",
-                new Error(`Invalid line format: ${line}`)
+                `Os dados fornecidos no campo Dados Tickets são inválidos. Por favor, verifique e corrija as informações antes de enviar.`, `O argumento '${line}' é inválido no Dados Tickets. Por favor, verifique e tente novamente ( Argumentos válidos: AWB, Descrição do Ticket).`
             );
             return null; // Returns null to indicate invalid line
         }
 
         const [awb, ticket] = parts;
         return {
-            AWB: awb, 
-            ticket: ticket 
+            AWB: awb,
+            ticket: ticket
         };
     }).filter(item => item !== null); // Filters Invalid Items
 }
 
+function RemoveState(data){
+    if(isEmptyOrUndefined(data)) return
+    
+    //Filters objects with RouterState equal to "for"
+    return data.filter(item => item.routerState === "FOR");
+}
+
+function mainWithCAF(dataMain, dataSec) {
+    if(isEmptyOrUndefined(dataMain) || isEmptyOrUndefined(dataSec)) return null;
+
+    const mergedData = [...dataMain, ...dataSec];
+
+    const uniqueData = mergedData.reduce((acc, item) => {
+        if (!acc.some(existingItem => existingItem.AWB === item.AWB)) {
+            acc.push(item);
+        }
+        return acc;
+    }, []);
+
+    return uniqueData;
+}
+
 function TicketChecker(dataMain, dataTicket) {
+
+    if(isEmptyOrUndefined(dataMain)) return;
+
     // Itera about each item in Datamain
     return dataMain.map(mainItem => {
         // Finds the corresponding item in Dataticket with the same AWB
         let ticketItem = false
-        if(!(dataTicket === '' || dataTicket === undefined)){
+        if (!(dataTicket === '' || dataTicket === undefined)) {
             ticketItem = dataTicket.find(ticketItem => ticketItem.AWB === mainItem.AWB);
         }
 
@@ -288,9 +340,9 @@ function TicketChecker(dataMain, dataTicket) {
             }
         } else {
             // If you have not found a corresponding item, it defines it as "Notauthenticated"
-            if(dataTicket === undefined || dataTicket === ''){
-                mainItem.ticket = "undefined" 
-            }else{
+            if (dataTicket === undefined || dataTicket === '') {
+                mainItem.ticket = "undefined"
+            } else {
                 mainItem.ticket = "notAuthenticated";
             }
         }
@@ -300,7 +352,11 @@ function TicketChecker(dataMain, dataTicket) {
 }
 
 function getCafs(data) {
-    if (!Array.isArray(data)) {
+    if(isEmptyOrUndefined(data)) return
+
+    const dataParts = data.parts;
+
+    if (!Array.isArray(dataParts)) {
         throw new Error('Invalid input: data must be an array of objects');
     }
 
@@ -308,7 +364,7 @@ function getCafs(data) {
     const inCAF = ["EM ROTA", "EM TRANSFERÊNCIA SECUNDÁRIA"];
     const inStreet = ["ENTREGA REALIZADA", "PROCESSO DE ENTREGA"];
 
-    const groupedData = data.reduce((acc, item) => {
+    const groupedData = dataParts.reduce((acc, item) => {
         const { AWB, router, boarding, CAF, state, driver, ticket } = item;
 
         if (CAF === '0') return acc;
@@ -379,6 +435,87 @@ function getCafs(data) {
     return result;
 }
 
+function recoveryCards(data) {
+
+    if(isEmptyOrUndefined(data)) return
+
+    const checkList = ["NUBT", "BNUK", "WILL"];
+    const result = {
+        cards: [],
+        parts: []
+    };
+
+    data.forEach(item => {
+        const awbPrefix = item.AWB.slice(0, 4); // Extracts the first 4 characters from AWB
+
+        if (checkList.includes(awbPrefix)) {
+            result.cards.push(item);
+        } else {
+            result.parts.push(item);
+        }
+    });
+
+    return result;
+}
+
+function alphabeticalOrdering(data) {
+    if (!data || data.length === 0) return;
+
+    const regexZeroNumLetter = /^0(\d+[A-Z])$/; // 01A, 06B
+    const regexNumLetterNum = /^(\d+[A-Z])(\d+)$/; // 1B1, 8C1
+    const regexTwoLettersNum = /^([A-Z]{2}\d+)$/; // CA1, MA1
+    const regexLetterTwoNums = /^([A-Z]\d{2})$/; // V01, S10
+
+    const getNormalizedValue = (router) => {
+        if (regexZeroNumLetter.test(router)) {
+            return router.replace(/^0/, ''); // Remove leading 0
+        } else if (regexNumLetterNum.test(router)) {
+            return router.replace(/\d+$/, ''); // Remove last digit for comparison
+        } else if (regexTwoLettersNum.test(router)) {
+            return router; // No change needed
+        } else if (regexLetterTwoNums.test(router)) {
+            return router; // No change needed
+        }
+        return router; // Default case
+    };
+
+    const getLastNumber = (router) => {
+        const match = router.match(/\d+$/); // Extract last number
+        return match ? parseInt(match[0], 10) : 0;
+    };
+
+    function compareRouter(a, b) {
+        const normA = getNormalizedValue(a.router);
+        const normB = getNormalizedValue(b.router);
+
+        if (regexTwoLettersNum.test(a.router) && regexTwoLettersNum.test(b.router)) {
+            // Compare two letters followed by a number
+            return a.router.localeCompare(b.router);
+        } else if (regexLetterTwoNums.test(a.router) && regexLetterTwoNums.test(b.router)) {
+            // Compare letter followed by two numbers
+            return a.router.localeCompare(b.router);
+        } else if (regexNumLetterNum.test(a.router) && regexNumLetterNum.test(b.router)) {
+            // Compare based on normalized values and then by the last number
+            const normalizedComparison = normA.localeCompare(normB);
+            if (normalizedComparison === 0) {
+                return getLastNumber(a.router) - getLastNumber(b.router);
+            }
+            return normalizedComparison;
+        } else {
+            // Normalize and compare the routers based on their normalized values
+            return normA.localeCompare(normB);
+        }
+    }
+
+    // Extract the values of the object `data` for an array, if `data` is an object
+    const valuesArray = Array.isArray(data) ? data : Object.values(data);
+
+    // Order the values
+    valuesArray.sort(compareRouter);
+
+    return valuesArray;
+}
+
 //:-------------
 
 
@@ -396,7 +533,7 @@ function redirectHelp() {
         console.error("Não foi possível determinar o caminho correto.");
     }
 }
-function errorHandling(errMsg, error) { 
+function errorHandling(errMsg, error) {
     const body = document.querySelector("body");
 
     const boxBC = document.createElement("div");
@@ -412,16 +549,22 @@ function errorHandling(errMsg, error) {
 
     setTimeout(() => {
         boxBC.remove();
-    }, 2000);
-    
+    }, 3000);
+
     if (error) {
         console.error('Ocorreu um erro: ', error);
     }
 }
 function getStateAvailable(data) {
+
+    if(isEmptyOrUndefined(data)) return
+
     const mainDataObject = createObjectData(data);
     const states = mainDataObject.map(item => item.state);
     const uniqueStates = [...new Set(states)];
     return uniqueStates;
+}
+function isEmptyOrUndefined(data) {
+    return data === '' || data === undefined || data === null;
 }
 //:-------------
