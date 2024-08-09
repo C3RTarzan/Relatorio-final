@@ -1,6 +1,11 @@
 document.addEventListener("DOMContentLoaded", function () {
     getUser()
     getName()
+
+    getLocalStorage()
+
+    updateDate()
+
     document.querySelector('.collectSelectName').addEventListener('change', function () {
         selectName();
     });
@@ -150,7 +155,7 @@ function selectName() {
 
 //: --- Main ---
 function getData() {
-
+    console.log("Loading..."); //? Console Debugging
     const mainData = document.querySelector("#data1").value; //@ Get data from part
     const cafData = document.querySelector("#data2").value; //@ Get data from caf
     const ticketsData = document.querySelector("#data3").value; //@ Get data from ticket
@@ -171,9 +176,13 @@ function getData() {
     const cafListMade = getCafs(cardsTreatment) //@ Create object with the CAF's
     const orders = alphabeticalOrdering(cafListMade) //@ Orvernment by alphabetical order
 
+    const values = getValues(orders, cardsTreatment) //@ Take total values
+
+    createTable(orders, values)
+
     const sates = getStateAvailable(mainData) //? Valid states of the pieces
 
-    console.log(orders); //? Console Debugging
+    console.log("Concluded!"); //? Console Debugging
 }
 
 function createObjectData(data, verification) {
@@ -516,8 +525,126 @@ function alphabeticalOrdering(data) {
     return valuesArray;
 }
 
-//:-------------
+function getValues(data, values){
+    if(isEmptyOrUndefined(data) || isEmptyOrUndefined(values) || !Array.isArray(data)) return 
 
+    const listData = values.parts
+    const listDataCards = values.cards
+
+    let volumesInCAF = 0;
+    let volumesWithoutCAF = 0; 
+    let totalCAFs = 0;
+    let auditedCAFs = 0;
+    let dispatchedCAFs = 0;
+    let volumesInCAFCards = 0
+
+    data.forEach(item => {
+        // Counting volumes in CAF
+        if (item.AWBS && Array.isArray(item.AWBS)) {
+            volumesInCAF += item.AWBS.length;
+        }
+
+        // Counting total CAFs
+        totalCAFs += 1;
+
+        // Counting audited CAFs
+        if (item.ticket && item.ticket.toLowerCase() === "audited") {
+            auditedCAFs += 1;
+        }
+
+        // Counting dispatched CAFs
+        if (item.state && item.state.toLowerCase() === "instreet") {
+            dispatchedCAFs += 1;
+        }
+    });
+
+    listData.forEach(item =>{
+        if(item.CAF === '0'){
+            volumesWithoutCAF += 1
+        } 
+    });
+
+    listDataCards.forEach(item =>{
+        volumesInCAFCards +=1 
+    })
+
+    return {
+        volumesInCAF,
+        totalCAFs,
+        auditedCAFs,
+        dispatchedCAFs,
+        volumesWithoutCAF,
+        volumesInCAFCards
+    };
+}
+
+function createTable(data, data2) {
+
+    localStorageCreate(data, data2)
+    
+    const mainSheet = document.querySelector('.mainSheet');
+    let lastInsertedElement = document.querySelector('.headerMainSheet');  // Starts with Headermainsheet
+    
+    // Clean all elements 'added' and 'addbg' existing
+    const addedElements = mainSheet.querySelectorAll('.added, .addedBG');
+    addedElements.forEach(element => element.remove());
+    
+    data.forEach((item, index) => {
+        const addedClass = index % 2 === 0 ? 'added' : 'added addedBG';
+
+        let stateItem;
+        if(item.state === "inCAF"){
+            stateItem = "Em CAF"
+        }else if(item.state ===  "inStreet"){
+            stateItem = "Na Rua"
+        }else{
+            stateItem = item.state
+        }
+
+        let stateTicket;
+        if(item.ticket === "notAuthenticated"){
+            stateTicket = "Não Auditado"
+        }else if(item.ticket === "audited"){
+            stateTicket = "Auditado"
+        }else{
+            stateTicket = "Indefinido"
+        }
+
+        const itemHTML = `
+            <div class="${addedClass}">
+                <div class="bcRouter">
+                    <span>${item.router}</span>
+                </div>
+                <div class="bcAggregate">
+                    <span>${item.driver}</span>
+                </div>
+                <div class="bcCAF">
+                    <span>${item.CAF}</span>
+                </div>
+                <div class="bcAmount">
+                    <span>${item.AWBS.length}</span>
+                </div>
+                <div class="bcState">
+                    <span>${stateItem}</span>
+                </div>
+                <div class="bcSituation">
+                    <span>${stateTicket}</span>
+                </div>
+            </div>
+        `;
+    
+        lastInsertedElement.insertAdjacentHTML('afterend', itemHTML);
+        lastInsertedElement = lastInsertedElement.nextElementSibling; // Atualiza a referência para o último elemento inserido
+    });
+
+    const footerSheet = document.querySelector('.footerSheet');
+    footerSheet.querySelector(".volumefooter span").innerHTML = `VOLUMES EM CAF: ${data2.volumesInCAF}`;
+    footerSheet.querySelector(".Madefooter span").innerHTML = `CAF’S FEITAS: ${data2.totalCAFs}`;
+    footerSheet.querySelector(".auditedfooter span").innerHTML = `CAF’S AUDITADA: ${data2.auditedCAFs}`;
+    footerSheet.querySelector(".issuedfooter span").innerHTML = `CAF’S EXPEDIDAS: ${data2.dispatchedCAFs}`;
+}
+
+//:-------------
 
 //: --- Helps ---
 function redirectHelp() {
@@ -565,6 +692,144 @@ function getStateAvailable(data) {
     return uniqueStates;
 }
 function isEmptyOrUndefined(data) {
-    return data === '' || data === undefined || data === null;
+    return data === '' || data === undefined || data === null || data === "undefined";
+}
+function createExcelFormat() {
+    const sheet = document.querySelector('.sheet');
+
+    if (!sheet) {
+        errorHandling("Tabela não encontrada.")
+        return;
+    }
+
+    // Extracting the data
+    let textData = '';
+    
+    // Header
+    const headerElements = sheet.querySelectorAll('.headerMainSheet .bcRouter, .headerMainSheet .bcAggregate, .headerMainSheet .bcCAF, .headerMainSheet .bcAmount, .headerMainSheet .bcState, .headerMainSheet .bcSituation');
+    textData += Array.from(headerElements).map(el => el.innerText).join('\t') + '\n';
+    
+    // Rows
+    const rows = sheet.querySelectorAll('.mainSheet .added, .mainSheet .addedBG');
+    rows.forEach(row => {
+        const columns = row.querySelectorAll('.bcRouter, .bcAggregate, .bcCAF, .bcAmount, .bcState, .bcSituation');
+        textData += Array.from(columns).map(col => col.querySelector('span').innerText).join('\t') + '\n';
+    });
+
+    // Footer
+    const footerElements = sheet.querySelectorAll('.footerSheet .volumefooter, .footerSheet .Madefooter, .footerSheet .auditedfooter, .footerSheet .issuedfooter');
+    textData += '\n'; // Add a newline before footer section
+    footerElements.forEach((el, index) => {
+        textData += el.querySelector('span').innerText + '\n';
+    });
+
+    // Copy to the transfer area
+    navigator.clipboard.writeText(textData).then(() => {
+        console.log("Tabela Copiada.");
+    }).catch(err => {
+        errorHandling("Erro ao copiar tebela.", err);
+    });
+}
+function localStorageCreate(data, data2){
+    localStorage.setItem('main', JSON.stringify(data));
+    localStorage.setItem('value', JSON.stringify(data2));
+}
+function getLocalStorage(){
+    if (isEmptyOrUndefined(localStorage.getItem("main")) && isEmptyOrUndefined(localStorage.getItem("value"))) return
+
+    const main = localStorage.getItem('main');
+    const myObjectMain = JSON.parse(main);
+
+    const value = localStorage.getItem('value');
+    const myObjectValue = JSON.parse(value);
+
+    createTable(myObjectMain, myObjectValue)
+}
+async function generateImage() {
+
+    createExcelFormat()
+
+    const content = document.querySelector('.sheet');
+    const button = document.querySelector('.buttonDn button');
+
+    if (!content || !button) {
+        console.error('Content or button not found.');
+        return;
+    }
+
+    // Store the original styles
+    const originalStyles = {
+        buttonDisplay: button.style.display,
+        contentStyles: {
+            width: content.style.width,
+            padding: content.style.padding,
+        }
+    };
+
+    // Hide the button and adjust the width of elements
+    button.style.display = "none";
+    content.style.width = "100%";
+    content.style.padding = "0";
+
+    const scale = 4;  // Adjust the scale as necessary to improve quality
+    const a4Width = 794;  // A4 sheet width in pixels at 96 DPI
+    const a4Height = 1123;  // A4 sheet height in pixels at 96 DPI
+
+    // Adjust content size to fit an A4 sheet
+    const contentWidth = content.offsetWidth;
+    const contentHeight = content.offsetHeight;
+    const widthRatio = a4Width / contentWidth;
+    const heightRatio = a4Height / contentHeight;
+    const fitScale = Math.min(widthRatio, heightRatio);
+
+    const options = {
+        width: contentWidth * fitScale * scale,
+        height: contentHeight * fitScale * scale,
+        style: {
+            transform: `scale(${fitScale * scale})`,
+            transformOrigin: 'top left',
+            width: `${contentWidth}px`,
+            height: `${contentHeight}px`,
+        }
+    };
+
+    try {
+        const dataUrl = await domtoimage.toPng(content, options);
+
+        // Restore the original styles
+        button.style.display = originalStyles.buttonDisplay;
+        content.style.width = originalStyles.contentStyles.width;
+        content.style.padding = originalStyles.contentStyles.padding;
+
+        // Configure the download button
+        button.disabled = false;
+        button.onclick = function () {
+            const link = document.createElement('a');
+            link.href = dataUrl;
+            link.download = 'RelatórioCaf.png';
+            link.click();
+        };
+
+        // Trigger a click to download immediately after the image is generated
+        button.click();
+
+    } catch (error) {
+        // Restore the button if an error occurs
+        button.style.display = originalStyles.buttonDisplay;
+        console.error('An error occurred while generating the image:', error);
+    }
+}
+function updateDate(){
+    const dateSpan = document.querySelector('.herderSheet .date span');
+    if(isEmptyOrUndefined(dateSpan)) return;
+    
+    // Get the current date
+    const today = new Date();
+    const day = String(today.getDate()).padStart(2, '0'); // Add zero to the left if necessary
+    const month = String(today.getMonth() + 1).padStart(2, '0'); // January is 0
+    const formattedDate = `${day}/${month}`;
+
+    // Update the element content
+    dateSpan.innerHTML = formattedDate;
 }
 //:-------------

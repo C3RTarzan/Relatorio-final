@@ -137,6 +137,8 @@ body {
             width: 100%;
             height: auto;
             justify-content: center;
+            align-items: center;
+            flex-direction: column;
             .sheet{
                 background-color: rgb(255, 255, 255);
                 width: 80%;
@@ -256,6 +258,7 @@ body {
                                 font-size: 13px;
                                 color: black;
                                 font-weight: 600;
+                                user-select: text;
                             }
                         }
                         .bcRouter{
@@ -340,9 +343,42 @@ body {
                 }
                 
             }
+            .buttonDn {
+                position: relative;
+                width: 100%;
+                padding: 10px;
+                height: auto;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                button {
+                    width: 150px;
+                    border: none;
+                    background-color: $corverde;
+                    padding: 10px 20px;
+                    color: white;
+                    font-size: 18px;
+                    font-weight: 600;
+                    border-radius: 5px;
+                    cursor: pointer;
+                    margin-bottom: 20px;
+
+                    &:hover {
+                        opacity: .8;
+                    }
+
+                    &:disabled {
+                        cursor: default;
+                        background-color: rgb(32, 32, 32);
+
+                        &:hover {
+                            opacity: 1;
+                        }
+                    }
+                }
+            }
         }
         .message{
-            background-color: rgb(30, 255, 0);
             width: 100%;
             height: auto;
         }
