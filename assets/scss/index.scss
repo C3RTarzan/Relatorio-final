@@ -4,7 +4,8 @@
 body {
     justify-content: center;
     align-items: center;
-    header{
+
+    header {
         padding: 10px;
         overflow-y: auto;
         width: 400px;
@@ -12,12 +13,14 @@ body {
         background-color: $dark3;
         border-right: solid 1px $dark1;
         flex-direction: column;
-        .dataInput{
+
+        .dataInput {
             margin: 20px 0;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            .types{
+
+            .types {
                 position: relative;
                 font-weight: 600;
                 margin: 5px 0;
@@ -25,10 +28,12 @@ body {
                 justify-content: center;
                 align-items: center;
                 cursor: help;
-                &:hover > div{
+
+                &:hover>div {
                     display: flex;
                 }
-                div{  
+
+                div {
                     position: absolute;
                     display: none;
                     top: -60px;
@@ -40,25 +45,27 @@ body {
                     justify-content: center;
                     align-items: center;
                     text-align: center;
-                    .typesSub{
+
+                    .typesSub {
                         font-size: 12px;
                         text-align: center;
                         margin: 5px 0;
                     }
                 }
             }
-            .collections{
 
-            }
+            .collections {}
         }
-        .button{
+
+        .button {
             position: relative;
             width: 100%;
             height: auto;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            button{
+
+            button {
                 width: 150px;
                 border: none;
                 background-color: $corbutton;
@@ -69,19 +76,22 @@ body {
                 border-radius: 5px;
                 cursor: pointer;
                 margin-bottom: 20px;
-                &:hover{
+
+                &:hover {
                     background-color: #1523b8;
                 }
-            } 
-            .buttonsole{
+            }
+
+            .buttonsole {
                 margin-bottom: 10px;
                 width: 200px;
             }
-            input{
+
+            input {
                 text-align: center;
             }
-            
-            .collectSelectName{
+
+            .collectSelectName {
                 appearance: none;
                 height: 25px;
                 margin-bottom: 10px;
@@ -91,29 +101,33 @@ body {
                 border: none;
                 border-radius: 3px;
                 cursor: pointer;
-                option{
-                }
+
+                option {}
             }
-            .icon{
+
+            .icon {
                 position: absolute;
                 top: 0px;
                 left: 0px;
                 font-size: 30px;
                 color: $corspan;
                 cursor: pointer;
-                &:hover{
+
+                &:hover {
                     opacity: .8;
                 }
             }
         }
     }
-    main{
+
+    main {
         overflow-y: auto;
         width: calc(100% - 400px);
         height: 100%;
         background-color: $dark3;
         flex-direction: column;
-        .help{
+
+        .help {
             position: absolute;
             right: 10px;
             width: 90px;
@@ -124,134 +138,158 @@ body {
             cursor: pointer;
             background-color: rgba(0, 0, 0, 0);
             font-weight: 600;
-            &:hover{
-                
-            }
+
+            &:hover {}
         }
-        .inffo{
+
+        .inffo {
             //background-color: red;
             width: 100%;
             height: 300px;
         }
-        .graphic{
+
+        .graphic {
             width: 100%;
             height: auto;
             justify-content: center;
             align-items: center;
             flex-direction: column;
-            .sheet{
+
+            .sheet {
                 background-color: rgb(255, 255, 255);
                 width: 80%;
                 flex-direction: column;
-                .herderSheet{
+
+                .herderSheet {
                     width: 100%;
                     height: 130px;
-                    div{
+
+                    div {
                         justify-content: center;
                         align-items: center;
                     }
-                    .logo{
+
+                    .logo {
                         width: 30%;
                         justify-content: flex-start;
                         padding: 10px;
-                        .bgImage{
+
+                        .bgImage {
                             width: 200px;
-                            height: 200px;
-                            img{
-                                width: 100%;
-                                height: 100%;
-                                user-select: none;
-                            }
+                            height: 130px;
+                            background-image: url("../img/logoTotal.png");
+                            background-size: 200px auto;
+                            background-repeat: no-repeat; 
+                            background-position: center;    
                         }
                     }
-                    .title{
+
+                    .title {
                         width: 40%;
                         flex-direction: column;
                         justify-content: center;
                         align-items: center;
                         text-align: center;
-                        span:nth-child(1){
+
+                        span:nth-child(1) {
                             font-size: 25px;
                             font-weight: 600;
                             color: #1E2348;
                         }
-                        span:nth-child(2){
+
+                        span:nth-child(2) {
                             font-size: 20px;
                             font-weight: 600;
                             color: #a80000;
-                            
+
                         }
-                    
+
                     }
-                    .date{
+
+                    .date {
                         width: 30%;
                         padding: 10px;
                         justify-content: flex-end;
                         align-items: flex-start;
-                        span{
+
+                        span {
                             font-size: 20px;
                             color: rgba(0, 0, 0, .8);
                             font-weight: 600;
                         }
                     }
                 }
-                .mainSheet{
+
+                .mainSheet {
                     width: 100%;
                     height: auto;
                     background-color: rgb(255, 255, 255);
                     flex-direction: column;
-                    .headerMainSheet{
+
+                    .headerMainSheet {
                         height: 30px;
                         width: 100%;
                         background-color: #1E2348;
-                        div{
+
+                        div {
                             overflow: hidden;
                             justify-content: center;
                             align-items: center;
                             border-left: solid 1px rgba(255, 255, 255, .2);
                             border-right: solid 1px rgba(255, 255, 255, .2);
-                            span{
+
+                            span {
                                 font-weight: 600;
                             }
                         }
-                        .bcRouter{
+
+                        .bcRouter {
                             width: 10%;
                             height: 100%;
                         }
-                        .bcAggregate{
+
+                        .bcAggregate {
                             width: 30%;
                             height: 100%;
                         }
-                        .bcCAF{
+
+                        .bcCAF {
                             width: 10%;
                             height: 100%;
                         }
-                        .bcAmount{
+
+                        .bcAmount {
                             width: 10%;
                             height: 100%;
                         }
-                        .bcState{
+
+                        .bcState {
                             width: 20%;
                             height: 100%;
+                            
                         }
-                        .bcSituation{
+
+                        .bcSituation {
                             width: 20%;
                             height: 100%;
                         }
 
                     }
-                    .added{
+
+                    .added {
                         min-height: 20px;
                         width: 100%;
                         background-color: #ffffff;
-                        div{
+
+                        div {
                             overflow: hidden;
                             align-items: center;
                             justify-content: center;
                             text-align: center;
                             border-left: solid 1px rgba(0, 0, 0, 0.2);
                             border-right: solid 1px rgba(0, 0, 0, 0.2);
-                            span{
+
+                            span {
                                 align-items: center;
                                 justify-content: center;
                                 align-items: center;
@@ -261,59 +299,92 @@ body {
                                 user-select: text;
                             }
                         }
-                        .bcRouter{
+
+                        .bcRouter {
                             width: 10%;
                             height: 100%;
-                            span{
+
+                            span {
                                 font-size: 18px;
                             }
                         }
-                        .bcAggregate{
+
+                        .bcAggregate {
                             width: 30%;
                             height: 100%;
-                            span{
+
+                            span {
                                 font-size: 13px;
                             }
                         }
-                        .bcCAF{
+
+                        .bcCAF {
                             width: 10%;
                             height: 100%;
-                            span{
+
+                            span {
                                 font-size: 14px;
                             }
                         }
-                        .bcAmount{
+
+                        .bcAmount {
                             width: 10%;
                             height: 100%;
-                            span{
+
+                            span {
                                 font-size: 18px;
                             }
                         }
-                        .bcState{
+
+                        .bcState {
                             width: 20%;
                             height: 100%;
-                            span{
+
+                            span {
                                 font-size: 16px;
                             }
+                            
                         }
-                        .bcSituation{
+
+                        .bcSituation {
                             width: 20%;
                             height: 100%;
-                            span{
+
+                            span {
                                 font-size: 16px;
                             }
                         }
                     }
-                    .addedBG{
+
+                    .addedBG {
                         background-color: #dfdfdf;
                     }
+                    
+                    .CL_inCAF{
+                        div{
+
+                            span{
+                                color: rgb(38, 65, 153);
+                            }
+                        }
+                    }
+                    
+                    .CL_inStreet{
+                        div{
+                            span{
+                                color: rgb(4, 148, 4);
+                            }
+                        }
+                    }
                 }
-                .footerSheet{
+
+                .footerSheet {
                     width: 100%;
                     min-height: 50px;
                     border-top-left-radius: 10px;
                     border-top-right-radius: 10px;
-                    div{
+
+                    div {
                         height: 100%;
                         width: 100%;
                         background-color: #1E2348;
@@ -324,25 +395,23 @@ body {
                         border-right: solid 1px rgba(255, 255, 255, 0.8);
                         border-left: solid 1px rgba(255, 255, 255, 0.8);
                         width: 25%;
-                        span{
+
+                        span {
                             font-weight: 600;
                         }
                     }
-                    .volumefooter{
 
-                    }
-                    .Madefooter{
+                    .volumefooter {}
 
-                    }
-                    .auditedfooter{
-                        
-                    }
-                    .issuedfooter{
+                    .Madefooter {}
 
-                    }
+                    .auditedfooter {}
+
+                    .issuedfooter {}
                 }
-                
+
             }
+
             .buttonDn {
                 position: relative;
                 width: 100%;
@@ -351,6 +420,7 @@ body {
                 flex-direction: column;
                 justify-content: center;
                 align-items: center;
+
                 button {
                     width: 150px;
                     border: none;
@@ -378,14 +448,15 @@ body {
                 }
             }
         }
-        .message{
+
+        .message {
             width: 100%;
             height: auto;
         }
     }
 }
 
-.config{
+.config {
     padding: 0 10px;
     position: absolute;
     top: -600px;
@@ -397,10 +468,12 @@ body {
     background-color: $dark1;
     box-shadow: 0 0 2px rgb(0, 0, 0);
     border-radius: 10px;
-    span{
+
+    span {
         color: $corspan;
     }
-    .iconClosed{
+
+    .iconClosed {
         position: absolute;
         right: -10px;
         top: -10px;
@@ -408,13 +481,15 @@ body {
         color: rgb(236, 49, 25);
         cursor: pointer;
     }
-    .namesUsers{
+
+    .namesUsers {
         width: 50%;
         height: 100%;
         flex-direction: column;
         overflow-y: auto;
         padding: 10px 10px 10px 0;
-        div{
+
+        div {
             padding: 5px;
             background-color: $dark2;
             margin-bottom: 10px;
@@ -424,10 +499,12 @@ body {
             border-radius: 3px;
             justify-content: space-between;
             align-items: center;
-            span{
+
+            span {
                 width: 90%;
             }
-            .iconDelet{
+
+            .iconDelet {
                 width: auto;
                 font-size: 25px;
                 cursor: pointer;
@@ -435,23 +512,27 @@ body {
             }
         }
     }
-    .nameAdd{
+
+    .nameAdd {
         width: 50%;
         height: 100%;
         flex-direction: column;
-        form{
+
+        form {
             width: 100%;
             height: 100%;
             display: flex;
             justify-content: center;
             align-items: center;
             flex-direction: column;
-            span{
+
+            span {
                 font-weight: 600;
                 font-size: 20px;
                 margin-bottom: 10px;
             }
-            input{
+
+            input {
                 width: 250px;
                 font-size: 18px;
                 height: 30px;
@@ -459,7 +540,8 @@ body {
                 text-align: center;
                 margin-bottom: 30px;
             }
-            button{
+
+            button {
                 width: 150px;
                 height: 35px;
                 border: none;
@@ -468,25 +550,28 @@ body {
                 font-size: 18px;
                 color: white;
                 cursor: pointer;
-                &:hover{
+
+                &:hover {
                     opacity: .8;
                 }
             }
         }
     }
+
     ::-webkit-scrollbar {
         width: 8px;
         background: #000000;
         cursor: pointer;
-      }
-      
+    }
+
     ::-webkit-scrollbar-thumb {
         background: #f0f0f0;
         border-radius: 0px;
         cursor: pointer;
     }
 }
-.errorBox{
+
+.errorBox {
     position: absolute;
     width: 100%;
     min-height: 50px;
@@ -498,7 +583,6 @@ body {
     color: white;
     font-size: 25px;
     font-weight: 600;
-    .error{
 
-    }
+    .error {}
 }

@@ -96,6 +96,9 @@ function getUser() {
 }
 function deletUser(user) {
     const userName = localStorage.getItem("Username");
+    if(isEmptyOrUndefined(userName)) return
+    
+
     const listNames = userName.split(", ");
 
     const indexToDelete = listNames.indexOf(user);
@@ -111,8 +114,9 @@ function deletUser(user) {
     }
 }
 function getName() {
-    //localStorage.setItem("Username", "Alan H. Silva, Natali alguma coisa, Ailson ferreira");
     const userName = localStorage.getItem("Username");
+
+    if(isEmptyOrUndefined(userName)) return
 
     const listNames = userName.split(", ");
 
@@ -364,7 +368,7 @@ function getCafs(data) {
     if(isEmptyOrUndefined(data)) return
 
     const dataParts = data.parts;
-
+    
     if (!Array.isArray(dataParts)) {
         throw new Error('Invalid input: data must be an array of objects');
     }
@@ -376,7 +380,7 @@ function getCafs(data) {
     const groupedData = dataParts.reduce((acc, item) => {
         const { AWB, router, boarding, CAF, state, driver, ticket } = item;
 
-        if (CAF === '0') return acc;
+        if(CAF === '0') return acc;
 
         if (!acc[CAF]) {
             acc[CAF] = {
@@ -403,17 +407,20 @@ function getCafs(data) {
 
         acc[CAF].drivers.add(driver);
         acc[CAF].boardings.add(boarding);
-
         return acc;
+
     }, {});
 
     const result = {};
 
     for (const [CAF, value] of Object.entries(groupedData)) {
         const { AWBS, routers, states, drivers, boardings, ticket } = value;
-
+        
         // Determine the most frequent router
-        const mostFrequentRouter = Object.entries(routers).reduce((a, b) => (b[1] > a[1] ? b : a))[0];
+        let mostFrequentRouter = Object.entries(routers).reduce((a, b) => (b[1] > a[1] ? b : a))[0];
+        if(CAF === '0'){
+            mostFrequentRouter = 'MTS'
+        }
 
         // Determine the most frequent state
         const stateCounts = { atTheBase: 0, inCAF: 0, inStreet: 0 };
@@ -434,6 +441,7 @@ function getCafs(data) {
             CAF: CAF,
             AWBS: Array.from(AWBS),
             router: mostFrequentRouter,
+            routerList: routers,
             state: stateValue,
             driver: Array.from(drivers)[0], // Assuming driver is the same for all entries in a CAF
             boarding: Array.from(boardings),
@@ -468,8 +476,8 @@ function recoveryCards(data) {
 }
 
 function alphabeticalOrdering(data) {
-    if (!data || data.length === 0) return;
-
+    if(isEmptyOrUndefined(data)) return
+    
     const regexZeroNumLetter = /^0(\d+[A-Z])$/; // 01A, 06B
     const regexNumLetterNum = /^(\d+[A-Z])(\d+)$/; // 1B1, 8C1
     const regexTwoLettersNum = /^([A-Z]{2}\d+)$/; // CA1, MA1
@@ -529,14 +537,18 @@ function getValues(data, values){
     if(isEmptyOrUndefined(data) || isEmptyOrUndefined(values) || !Array.isArray(data)) return 
 
     const listData = values.parts
-    const listDataCards = values.cards
-
+    const listDataCards = values.cards 
+    
     let volumesInCAF = 0;
     let volumesWithoutCAF = 0; 
+    let volumes = 0
     let totalCAFs = 0;
     let auditedCAFs = 0;
     let dispatchedCAFs = 0;
     let volumesInCAFCards = 0
+    const items = [];
+
+    const uniqueCAFs = new Set();
 
     data.forEach(item => {
         // Counting volumes in CAF
@@ -544,8 +556,11 @@ function getValues(data, values){
             volumesInCAF += item.AWBS.length;
         }
 
-        // Counting total CAFs
-        totalCAFs += 1;
+        // Checking if the CAF is unique and counting total CAFs
+        if (item.CAF && !uniqueCAFs.has(item.CAF)) {
+            uniqueCAFs.add(item.CAF);
+            totalCAFs += 1;
+        }
 
         // Counting audited CAFs
         if (item.ticket && item.ticket.toLowerCase() === "audited") {
@@ -559,19 +574,27 @@ function getValues(data, values){
     });
 
     listData.forEach(item =>{
-        if(item.CAF === '0'){
+        if(item.router !== 'ECT'){
+            volumes += 1
+        }
+        if(item.CAF === '0' && item.router !== 'ECT'){
             volumesWithoutCAF += 1
         } 
+        if(item.boarding){
+            //uniqueListManager(items).addItem(item.boarding);
+        }
     });
 
     listDataCards.forEach(item =>{
-        volumesInCAFCards +=1 
+        
     })
 
     return {
+        volumes,
         volumesInCAF,
         totalCAFs,
         auditedCAFs,
+        //boarding: uniqueListManager.getItems(),
         dispatchedCAFs,
         volumesWithoutCAF,
         volumesInCAFCards
@@ -579,6 +602,7 @@ function getValues(data, values){
 }
 
 function createTable(data, data2) {
+    if(isEmptyOrUndefined(data) && isEmptyOrUndefined(data2)) return
 
     localStorageCreate(data, data2)
     
@@ -597,6 +621,8 @@ function createTable(data, data2) {
             stateItem = "Em CAF"
         }else if(item.state ===  "inStreet"){
             stateItem = "Na Rua"
+        }else if(item.state === "atTheBase"){
+            stateItem = "Em base"
         }else{
             stateItem = item.state
         }
@@ -609,9 +635,8 @@ function createTable(data, data2) {
         }else{
             stateTicket = "Indefinido"
         }
-
         const itemHTML = `
-            <div class="${addedClass}">
+            <div class="${addedClass} CL_${item.state}">
                 <div class="bcRouter">
                     <span>${item.router}</span>
                 </div>
@@ -643,8 +668,8 @@ function createTable(data, data2) {
     footerSheet.querySelector(".auditedfooter span").innerHTML = `CAF’S AUDITADA: ${data2.auditedCAFs}`;
     footerSheet.querySelector(".issuedfooter span").innerHTML = `CAF’S EXPEDIDAS: ${data2.dispatchedCAFs}`;
 }
-
 //:-------------
+
 
 //: --- Helps ---
 function redirectHelp() {
@@ -696,7 +721,7 @@ function isEmptyOrUndefined(data) {
 }
 function createExcelFormat() {
     const sheet = document.querySelector('.sheet');
-
+    
     if (!sheet) {
         errorHandling("Tabela não encontrada.")
         return;
@@ -746,8 +771,8 @@ function getLocalStorage(){
     createTable(myObjectMain, myObjectValue)
 }
 async function generateImage() {
-
     createExcelFormat()
+    
 
     const content = document.querySelector('.sheet');
     const button = document.querySelector('.buttonDn button');
@@ -801,12 +826,18 @@ async function generateImage() {
         content.style.width = originalStyles.contentStyles.width;
         content.style.padding = originalStyles.contentStyles.padding;
 
+        // Get the current date
+        const today = new Date();
+        const day = String(today.getDate()).padStart(2, '0'); // Add zero to the left if necessary
+        const month = String(today.getMonth() + 1).padStart(2, '0'); // January is 0
+        const formattedDate = `${day}.${month}`;
+
         // Configure the download button
         button.disabled = false;
         button.onclick = function () {
             const link = document.createElement('a');
             link.href = dataUrl;
-            link.download = 'RelatórioCaf.png';
+            link.download = `Report ${formattedDate}.png`;
             link.click();
         };
 
@@ -831,5 +862,19 @@ function updateDate(){
 
     // Update the element content
     dateSpan.innerHTML = formattedDate;
+}
+function createUniqueList(items) {
+    return {
+        addItem: function(item) {
+            // Checks if the item already exists on the list
+            if (!items.includes(item)) {
+                items.push(item); // Add the item if it does not exist
+            } else {
+            }
+        },
+        getItems: function() {
+            return items;
+        }
+    };
 }
 //:-------------

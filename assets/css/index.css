@@ -251,12 +251,11 @@ body main .graphic .sheet .herderSheet .logo {
 }
 body main .graphic .sheet .herderSheet .logo .bgImage {
   width: 200px;
-  height: 200px;
-}
-body main .graphic .sheet .herderSheet .logo .bgImage img {
-  width: 100%;
-  height: 100%;
-  user-select: none;
+  height: 130px;
+  background-image: url("../img/logoTotal.png");
+  background-size: 200px auto;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 body main .graphic .sheet .herderSheet .title {
   width: 40%;
@@ -397,6 +396,12 @@ body main .graphic .sheet .mainSheet .added .bcSituation span {
 }
 body main .graphic .sheet .mainSheet .addedBG {
   background-color: #dfdfdf;
+}
+body main .graphic .sheet .mainSheet .CL_inCAF div span {
+  color: rgb(38, 65, 153);
+}
+body main .graphic .sheet .mainSheet .CL_inStreet div span {
+  color: rgb(4, 148, 4);
 }
 body main .graphic .sheet .footerSheet {
   width: 100%;
