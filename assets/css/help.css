@@ -164,5 +164,8 @@ textarea {
 .help .help:hover {
   background-color: white;
 }
+.help a {
+  color: rgb(89, 89, 199);
+}
 
 /*# sourceMappingURL=help.css.map */

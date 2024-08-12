@@ -6,8 +6,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
     updateDate()
 
+    createselectElement()
+
+    createMessage()
+
     document.querySelector('.collectSelectName').addEventListener('change', function () {
         selectName();
+        createMessage()
     });
 });
 
@@ -96,8 +101,8 @@ function getUser() {
 }
 function deletUser(user) {
     const userName = localStorage.getItem("Username");
-    if(isEmptyOrUndefined(userName)) return
-    
+    if (isEmptyOrUndefined(userName)) return
+
 
     const listNames = userName.split(", ");
 
@@ -116,7 +121,7 @@ function deletUser(user) {
 function getName() {
     const userName = localStorage.getItem("Username");
 
-    if(isEmptyOrUndefined(userName)) return
+    if (isEmptyOrUndefined(userName)) return
 
     const listNames = userName.split(", ");
 
@@ -170,7 +175,7 @@ function getData() {
 
     const removeRouteStateData = RemoveState(mainDataObject) //@ Remove parameter from "FOR" from "Data"
     const removeRouteStateSecData = RemoveState(mianSecDataObject) //@ Remove parameter from "FOR" from "secData"
-    
+
     const completeData = mainWithCAF(removeRouteStateData, removeRouteStateSecData) //@ Join the primary data with the secondary data
 
     const toCheckTicket = TicketChecker(completeData || removeRouteStateData, ticketsDataObject); //@ Verify is audited
@@ -184,6 +189,10 @@ function getData() {
 
     createTable(orders, values)
 
+    createselectElement()
+
+    createMessage()
+
     const sates = getStateAvailable(mainData) //? Valid states of the pieces
 
     console.log("Concluded!"); //? Console Debugging
@@ -193,9 +202,9 @@ function createObjectData(data, verification) {
 
     let tipyData = "";
 
-    if(verification){
+    if (verification) {
         tipyData = "Dados Principais"
-    }else{
+    } else {
         tipyData = "Dados CAF"
     }
 
@@ -206,7 +215,7 @@ function createObjectData(data, verification) {
         return
     }
 
-    if(data === "" && !verification){
+    if (data === "" && !verification) {
         return
     }
 
@@ -215,8 +224,8 @@ function createObjectData(data, verification) {
         const match = router.match(/\[(.*?)\]/);
         return match ? match[1] : '';
     }
-    function extractRouterStateValue(router){
-        const state = router.split("-")    
+    function extractRouterStateValue(router) {
+        const state = router.split("-")
         return state[1]
     }
 
@@ -238,12 +247,12 @@ function createObjectData(data, verification) {
     if (hasHeader) {
         data.shift();
     }
-    
+
     // Turning data into validation objects
     return data.map(line => {
         const parts = line.split('\t');
-        
-        
+
+
 
         // Checks if the line has at least 6 parts (including the 'driver' field and the 'state' field prior to it)
         if (parts.length < 5) {
@@ -253,7 +262,7 @@ function createObjectData(data, verification) {
             return null; // Returns null to indicate invalid line
         }
 
-        
+
         const [awb, router, boarding, caf, state, driver] = parts;
         return {
             AWB: awb,
@@ -269,7 +278,7 @@ function createObjectData(data, verification) {
 }
 
 function createObjectTickets(data) {
-    if(isEmptyOrUndefined(data)) return
+    if (isEmptyOrUndefined(data)) return
 
     // Check if date is a string and converts to an array
     if (typeof data === 'string') {
@@ -310,15 +319,15 @@ function createObjectTickets(data) {
     }).filter(item => item !== null); // Filters Invalid Items
 }
 
-function RemoveState(data){
-    if(isEmptyOrUndefined(data)) return
-    
+function RemoveState(data) {
+    if (isEmptyOrUndefined(data)) return
+
     //Filters objects with RouterState equal to "for"
     return data.filter(item => item.routerState === "FOR");
 }
 
 function mainWithCAF(dataMain, dataSec) {
-    if(isEmptyOrUndefined(dataMain) || isEmptyOrUndefined(dataSec)) return null;
+    if (isEmptyOrUndefined(dataMain) || isEmptyOrUndefined(dataSec)) return null;
 
     const mergedData = [...dataMain, ...dataSec];
 
@@ -334,7 +343,7 @@ function mainWithCAF(dataMain, dataSec) {
 
 function TicketChecker(dataMain, dataTicket) {
 
-    if(isEmptyOrUndefined(dataMain)) return;
+    if (isEmptyOrUndefined(dataMain)) return;
 
     // Itera about each item in Datamain
     return dataMain.map(mainItem => {
@@ -365,10 +374,10 @@ function TicketChecker(dataMain, dataTicket) {
 }
 
 function getCafs(data) {
-    if(isEmptyOrUndefined(data)) return
+    if (isEmptyOrUndefined(data)) return
 
     const dataParts = data.parts;
-    
+
     if (!Array.isArray(dataParts)) {
         throw new Error('Invalid input: data must be an array of objects');
     }
@@ -380,7 +389,7 @@ function getCafs(data) {
     const groupedData = dataParts.reduce((acc, item) => {
         const { AWB, router, boarding, CAF, state, driver, ticket } = item;
 
-        if(CAF === '0') return acc;
+        if (CAF === '0') return acc;
 
         if (!acc[CAF]) {
             acc[CAF] = {
@@ -415,10 +424,10 @@ function getCafs(data) {
 
     for (const [CAF, value] of Object.entries(groupedData)) {
         const { AWBS, routers, states, drivers, boardings, ticket } = value;
-        
+
         // Determine the most frequent router
         let mostFrequentRouter = Object.entries(routers).reduce((a, b) => (b[1] > a[1] ? b : a))[0];
-        if(CAF === '0'){
+        if (CAF === '0') {
             mostFrequentRouter = 'MTS'
         }
 
@@ -454,7 +463,7 @@ function getCafs(data) {
 
 function recoveryCards(data) {
 
-    if(isEmptyOrUndefined(data)) return
+    if (isEmptyOrUndefined(data)) return
 
     const checkList = ["NUBT", "BNUK", "WILL"];
     const result = {
@@ -476,8 +485,8 @@ function recoveryCards(data) {
 }
 
 function alphabeticalOrdering(data) {
-    if(isEmptyOrUndefined(data)) return
-    
+    if (isEmptyOrUndefined(data)) return
+
     const regexZeroNumLetter = /^0(\d+[A-Z])$/; // 01A, 06B
     const regexNumLetterNum = /^(\d+[A-Z])(\d+)$/; // 1B1, 8C1
     const regexTwoLettersNum = /^([A-Z]{2}\d+)$/; // CA1, MA1
@@ -533,14 +542,14 @@ function alphabeticalOrdering(data) {
     return valuesArray;
 }
 
-function getValues(data, values){
-    if(isEmptyOrUndefined(data) || isEmptyOrUndefined(values) || !Array.isArray(data)) return 
+function getValues(data, values) {
+    if (isEmptyOrUndefined(data) || isEmptyOrUndefined(values) || !Array.isArray(data)) return
 
     const listData = values.parts
-    const listDataCards = values.cards 
-    
+    const listDataCards = values.cards
+
     let volumesInCAF = 0;
-    let volumesWithoutCAF = 0; 
+    let volumesWithoutCAF = 0;
     let volumes = 0
     let totalCAFs = 0;
     let auditedCAFs = 0;
@@ -573,20 +582,20 @@ function getValues(data, values){
         }
     });
 
-    listData.forEach(item =>{
-        if(item.router !== 'ECT'){
+    listData.forEach(item => {
+        if (item.router !== 'ECT') {
             volumes += 1
         }
-        if(item.CAF === '0' && item.router !== 'ECT'){
+        if (item.CAF === '0' && item.router !== 'ECT') {
             volumesWithoutCAF += 1
-        } 
-        if(item.boarding){
+        }
+        if (item.boarding) {
             //uniqueListManager(items).addItem(item.boarding);
         }
     });
 
-    listDataCards.forEach(item =>{
-        
+    listDataCards.forEach(item => {
+
     })
 
     return {
@@ -602,41 +611,41 @@ function getValues(data, values){
 }
 
 function createTable(data, data2) {
-    if(isEmptyOrUndefined(data) && isEmptyOrUndefined(data2)) return
+    if (isEmptyOrUndefined(data) && isEmptyOrUndefined(data2)) return
 
     localStorageCreate(data, data2)
-    
+
     const mainSheet = document.querySelector('.mainSheet');
     let lastInsertedElement = document.querySelector('.headerMainSheet');  // Starts with Headermainsheet
-    
+
     // Clean all elements 'added' and 'addbg' existing
     const addedElements = mainSheet.querySelectorAll('.added, .addedBG');
     addedElements.forEach(element => element.remove());
-    
+
     data.forEach((item, index) => {
         const addedClass = index % 2 === 0 ? 'added' : 'added addedBG';
 
         let stateItem;
-        if(item.state === "inCAF"){
+        if (item.state === "inCAF") {
             stateItem = "Em CAF"
-        }else if(item.state ===  "inStreet"){
+        } else if (item.state === "inStreet") {
             stateItem = "Na Rua"
-        }else if(item.state === "atTheBase"){
+        } else if (item.state === "atTheBase") {
             stateItem = "Em base"
-        }else{
+        } else {
             stateItem = item.state
         }
 
         let stateTicket;
-        if(item.ticket === "notAuthenticated"){
+        if (item.ticket === "notAuthenticated") {
             stateTicket = "Não Auditado"
-        }else if(item.ticket === "audited"){
+        } else if (item.ticket === "audited") {
             stateTicket = "Auditado"
-        }else{
+        } else {
             stateTicket = "Indefinido"
         }
         const itemHTML = `
-            <div class="${addedClass} CL_${item.state}">
+            <div class="${addedClass} CL_${item.state}" id="CAF_${item.CAF}">
                 <div class="bcRouter">
                     <span>${item.router}</span>
                 </div>
@@ -657,7 +666,7 @@ function createTable(data, data2) {
                 </div>
             </div>
         `;
-    
+
         lastInsertedElement.insertAdjacentHTML('afterend', itemHTML);
         lastInsertedElement = lastInsertedElement.nextElementSibling; // Atualiza a referência para o último elemento inserido
     });
@@ -668,6 +677,32 @@ function createTable(data, data2) {
     footerSheet.querySelector(".auditedfooter span").innerHTML = `CAF’S AUDITADA: ${data2.auditedCAFs}`;
     footerSheet.querySelector(".issuedfooter span").innerHTML = `CAF’S EXPEDIDAS: ${data2.dispatchedCAFs}`;
 }
+
+function deleteData() {
+    const select = document.querySelector(".collectTurnOffCaf").value;
+
+    if (select === '0' || select === '00000000') {
+        errorHandling("Valor invalido para ser apagado.");
+        return;
+    }
+
+    const data = `CAF_${select}`;
+
+    const deleted = document.querySelector(`#${data}`);
+
+
+    if (deleted) {
+        deleteLocalStorage(select)
+    } else {
+        errorHandling("Erro ao apagar Item.")
+    }
+
+    createselectElement();
+
+    createMessage()
+
+}
+
 //:-------------
 
 
@@ -709,7 +744,7 @@ function errorHandling(errMsg, error) {
 }
 function getStateAvailable(data) {
 
-    if(isEmptyOrUndefined(data)) return
+    if (isEmptyOrUndefined(data)) return
 
     const mainDataObject = createObjectData(data);
     const states = mainDataObject.map(item => item.state);
@@ -721,7 +756,7 @@ function isEmptyOrUndefined(data) {
 }
 function createExcelFormat() {
     const sheet = document.querySelector('.sheet');
-    
+
     if (!sheet) {
         errorHandling("Tabela não encontrada.")
         return;
@@ -729,11 +764,11 @@ function createExcelFormat() {
 
     // Extracting the data
     let textData = '';
-    
+
     // Header
     const headerElements = sheet.querySelectorAll('.headerMainSheet .bcRouter, .headerMainSheet .bcAggregate, .headerMainSheet .bcCAF, .headerMainSheet .bcAmount, .headerMainSheet .bcState, .headerMainSheet .bcSituation');
     textData += Array.from(headerElements).map(el => el.innerText).join('\t') + '\n';
-    
+
     // Rows
     const rows = sheet.querySelectorAll('.mainSheet .added, .mainSheet .addedBG');
     rows.forEach(row => {
@@ -755,11 +790,11 @@ function createExcelFormat() {
         errorHandling("Erro ao copiar tebela.", err);
     });
 }
-function localStorageCreate(data, data2){
+function localStorageCreate(data, data2) {
     localStorage.setItem('main', JSON.stringify(data));
     localStorage.setItem('value', JSON.stringify(data2));
 }
-function getLocalStorage(){
+function getLocalStorage() {
     if (isEmptyOrUndefined(localStorage.getItem("main")) && isEmptyOrUndefined(localStorage.getItem("value"))) return
 
     const main = localStorage.getItem('main');
@@ -770,29 +805,62 @@ function getLocalStorage(){
 
     createTable(myObjectMain, myObjectValue)
 }
+function deleteLocalStorage(CAF) {
+    if (isEmptyOrUndefined(localStorage.getItem("main")) || isEmptyOrUndefined(localStorage.getItem("value"))) return;
+
+    // Recover and parse the objects of the localStorage
+    const main = localStorage.getItem('main');
+    const myObjectMain = JSON.parse(main);
+
+    const value = localStorage.getItem('value');
+    const myObjectValue = JSON.parse(value);
+
+    // Remove the item based on CAF
+    const updatedMain = myObjectMain.filter(item => item.CAF !== CAF);
+
+    // Update MyobjectValue based on removal
+    const removedItem = myObjectMain.find(item => item.CAF === CAF);
+
+    if (removedItem) {
+        // Update VolumesinCaf
+        const totalAWBsInCAF = updatedMain.reduce((acc, item) => acc + item.AWBS.length, 0);
+        myObjectValue.volumesInCAF = totalAWBsInCAF;
+
+        // Update TotalCAFS
+        myObjectValue.totalCAFs = updatedMain.length;
+
+        // Update Dispatched Cafs and Audited Caf
+        if (removedItem.state === 'inStreet') {
+            myObjectValue.dispatchedCAFs -= 1;
+        }
+        if (removedItem.ticket === 'audited') {
+            myObjectValue.auditedCAFs -= 1;
+        }
+    }
+
+    // Save updated objects in the LocalSorge
+    localStorage.setItem('main', JSON.stringify(updatedMain));
+    localStorage.setItem('value', JSON.stringify(myObjectValue));
+
+    getLocalStorage()
+}
 async function generateImage() {
     createExcelFormat()
-    
 
     const content = document.querySelector('.sheet');
-    const button = document.querySelector('.buttonDn button');
 
-    if (!content || !button) {
-        console.error('Content or button not found.');
+    if (!content) {
+        console.error('Content not found.');
         return;
     }
 
     // Store the original styles
     const originalStyles = {
-        buttonDisplay: button.style.display,
-        contentStyles: {
-            width: content.style.width,
-            padding: content.style.padding,
-        }
+        width: content.style.width,
+        padding: content.style.padding,
     };
 
-    // Hide the button and adjust the width of elements
-    button.style.display = "none";
+    // Adjust the width of the content element
     content.style.width = "100%";
     content.style.padding = "0";
 
@@ -822,38 +890,32 @@ async function generateImage() {
         const dataUrl = await domtoimage.toPng(content, options);
 
         // Restore the original styles
-        button.style.display = originalStyles.buttonDisplay;
-        content.style.width = originalStyles.contentStyles.width;
-        content.style.padding = originalStyles.contentStyles.padding;
+        content.style.width = originalStyles.width;
+        content.style.padding = originalStyles.padding;
 
         // Get the current date
         const today = new Date();
-        const day = String(today.getDate()).padStart(2, '0'); // Add zero to the left if necessary
-        const month = String(today.getMonth() + 1).padStart(2, '0'); // January is 0
+        const day = String(today.getDate()).padStart(2, '0');
+        const month = String(today.getMonth() + 1).padStart(2, '0');
         const formattedDate = `${day}.${month}`;
 
-        // Configure the download button
-        button.disabled = false;
-        button.onclick = function () {
-            const link = document.createElement('a');
-            link.href = dataUrl;
-            link.download = `Report ${formattedDate}.png`;
-            link.click();
-        };
-
-        // Trigger a click to download immediately after the image is generated
-        button.click();
+        // Create a download link and trigger the download
+        const link = document.createElement('a');
+        link.href = dataUrl;
+        link.download = `Report ${formattedDate}.png`;
+        link.click();
 
     } catch (error) {
-        // Restore the button if an error occurs
-        button.style.display = originalStyles.buttonDisplay;
+        // Restore the original styles if an error occurs
+        content.style.width = originalStyles.width;
+        content.style.padding = originalStyles.padding;
         console.error('An error occurred while generating the image:', error);
     }
 }
-function updateDate(){
+function updateDate() {
     const dateSpan = document.querySelector('.herderSheet .date span');
-    if(isEmptyOrUndefined(dateSpan)) return;
-    
+    if (isEmptyOrUndefined(dateSpan)) return;
+
     // Get the current date
     const today = new Date();
     const day = String(today.getDate()).padStart(2, '0'); // Add zero to the left if necessary
@@ -865,16 +927,239 @@ function updateDate(){
 }
 function createUniqueList(items) {
     return {
-        addItem: function(item) {
+        addItem: function (item) {
             // Checks if the item already exists on the list
             if (!items.includes(item)) {
                 items.push(item); // Add the item if it does not exist
             } else {
             }
         },
-        getItems: function() {
+        getItems: function () {
             return items;
         }
     };
+}
+function copy() {
+    const msgcopy = document.querySelector('.textcopy')
+    const copy = document.querySelector('.copy')
+    const msg = msgcopy
+
+    const elementoTextCopy = msg.textContent.replace(/^\s+/gm, '').replace(/br/g, '\n');
+
+    navigator.clipboard.writeText(elementoTextCopy)
+        .then(() => {
+            copy.style.display = 'flex'
+            setTimeout(function () {
+                copy.style.display = 'none'
+            }, 500)
+        })
+        .catch((err) => {
+            errorHandling('Erro ao copiar o texto ', err)
+        });
+}
+function createselectElement() {
+    // Selects all .added elements within .mainsheet
+    const addedElements = document.querySelectorAll('.mainSheet .added');
+
+    if (isEmptyOrUndefined(addedElements)) return;
+
+    // Maps the desired data of each element .added
+    const data = Array.from(addedElements).map(element => {
+        const router = element.querySelector('.bcRouter span')?.textContent || '';
+        const aggregate = element.querySelector('.bcAggregate span')?.textContent || '';
+        const caf = element.querySelector('.bcCAF span')?.textContent || '';
+
+        return { router, aggregate, caf };
+    });
+
+    // Select the <select> element
+    const selectElement = document.querySelector('.collectTurnOffCaf');
+
+    // Check if the select element exists
+    if (!selectElement) {
+        console.error('Select element not found.');
+        return;
+    }
+
+    // Remove all existing options except the first one
+    while (selectElement.options.length > 1) {
+        selectElement.remove(1);
+    }
+
+    // Iterate over the data and create options
+    data.forEach(item => {
+        const option = document.createElement('option');
+        option.value = `${item.caf}`; // Define the value of the option as the CAF
+        option.textContent = `${item.router} - ${item.aggregate} (${item.caf})`; // Define the text of the option
+
+        // Add the new option to the select element
+        selectElement.appendChild(option);
+    });
+}
+function createMessage() {
+    const mensagemContainer = document.querySelector(".msg");
+    const name = document.querySelector("#name").value
+
+    if (isEmptyOrUndefined(localStorage.getItem("main")) && isEmptyOrUndefined(localStorage.getItem("value"))) return
+
+    const value = localStorage.getItem('value');
+    const myObjectValue = JSON.parse(value);
+
+    const mensagemHTML = `
+        <div class="msg">
+            <span class="text textcopy withGraphic" onclick="copy()" style="white-space: pre-line;">
+                Bom-dia!<span style="display: none;">br</span>
+
+                *Caf's feitas, auditadas e expedidas pelo 3° turno*<span style="display: none;">br</span>
+
+                Hoje *data*, foram feitas *${myObjectValue.totalCAFs}* caf's, movimentado 
+                *${myObjectValue.volumesInCAF}* peças para serem expedidas. <span style="display: none;">br</span>
+
+                Foram expedidas *${myObjectValue.dispatchedCAFs}* caf's<span style="display: none;">br</span>
+
+                Recebemos na base um total de *${myObjectValue.volumes}* peças.<span style="display: none;">br</span>
+
+                @Wagner @Maria @Wellington @Luciano @Thallys @Kelvin @Emanuel <span style="display: none;">br</span>
+
+                ~${name}
+            </span>
+            <span class="copy" style="position: absolute;">Copiado</span>
+        </div>
+    `
+
+    if (mensagemContainer) {
+        mensagemContainer.innerHTML = mensagemHTML;
+    } else {
+        errorHandling("Elemento .msg não encontrado para inserir a mensagem.");
+    }
+}
+function deleteDate() {
+    localStorage.removeItem('main');
+    localStorage.removeItem('value');
+    const sheet = document.querySelector(".sheet")
+    sheet.innerHTML = `
+        <div class="herderSheet">
+            <div class="logo">
+                <div class="bgImage">
+                    
+                </div>
+            </div>
+            <div class="title">
+                <span>RELATÓRIO DE CONTROLE</span>
+                <span>TERCEIRO TURNO</span>
+            </div>
+            <div class="date">
+                <span>08/08</span>
+            </div>
+            <div class="logoProperty">
+            </div>
+        </div>
+        <div class="mainSheet">
+            <div class="headerMainSheet">
+                <div class="bcRouter">
+                    <span>ROTA</span>
+                </div>
+                <div class="bcAggregate">
+                    <span>AGREGADO</span>
+                </div>
+                <div class="bcCAF">
+                    <span>CAF</span>
+                </div>
+                <div class="bcAmount">
+                    <span>QTD</span>
+                </div>
+                <div class="bcState">
+                    <span>STATUS</span>
+                </div>
+                <div class="bcSituation">
+                    <span>SITUAÇÃO</span>
+                </div>
+            </div>
+            <div class="added">
+                <div class="bcRouter">
+                    <span>000</span>
+                </div>
+                <div class="bcAggregate">
+                    <span>NOME DO AGREGADO</span>
+                </div>
+                <div class="bcCAF">
+                    <span>00000000</span>
+                </div>
+                <div class="bcAmount">
+                    <span>0</span>
+                </div>
+                <div class="bcState">
+                    <span>NULL</span>
+                </div>
+                <div class="bcSituation">
+                    <span>NULL</span>
+                </div>
+            </div>
+            <div class="added addedBG">
+                <div class="bcRouter">
+                    <span>000</span>
+                </div>
+                <div class="bcAggregate">
+                    <span>NOME DO AGREGADO</span>
+                </div>
+                <div class="bcCAF">
+                    <span>00000000</span>
+                </div>
+                <div class="bcAmount">
+                    <span>0</span>
+                </div>
+                <div class="bcState">
+                    <span>NULL</span>
+                </div>
+                <div class="bcSituation">
+                    <span>NULL</span>
+                </div>
+            </div>
+        </div>
+        <div class="footerSheet">
+            <div class="volumefooter">
+                <span>VOLUMES EM CAF: 0</span>
+            </div>
+            <div class="Madefooter">
+                <span>CAF’S FEITAS: 0</span>
+            </div>
+            <div class="auditedfooter">
+                <span>CAF’S AUDITADA: 0</span>
+            </div>
+            <div class="issuedfooter">
+                <span>CAF’S EXPEDIDAS: 0</span>
+            </div>
+        </div>
+    `;
+    const message = document.querySelector('.message');
+    message.innerHTML = `
+        <div class="title">
+            <span class="h1">Mensagem</span>
+        </div>
+        <div class="box">
+            <div class="msg">
+                <span class="text textcopy withGraphic" onclick="copy()" style="white-space: pre-line;">
+                    Bom-dia!<span style="display: none;">br</span>
+
+                    *Caf's feitas, auditadas e expedidas pelo 3° turno*<span style="display: none;">br</span>
+
+                    Hoje *data*, foram feitas *quantidade* caf's, movimentado 
+                    *quantidade* peças para serem expedidas. <span style="display: none;">br</span>
+
+                    Foram liberadas *quantidade* caf's um total de *quantidade* peças.<span style="display: none;">br</span>
+
+                    Recebemos na base um total de *quantidade* peças dos embarque ( *embarque* | *emarque* ).<span style="display: none;">br</span>
+
+                    @Wagner @Maria @Wellington @Luciano @Thallys @Kelvin @Emanuel <span style="display: none;">br</span>
+
+                    ~Alan H. Silva
+                </span>
+                <span class="copy" style="position: absolute;">Copiado</span>
+            </div>
+        </div>
+    `
+
+    updateDate()
+    createselectElement()
 }
 //:-------------

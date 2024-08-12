@@ -222,34 +222,81 @@ body main .help {
 }
 body main .inffo {
   width: 100%;
-  height: 300px;
+  height: auto;
 }
-body main .graphic {
+body main .inffo .inffo2 {
+  width: 100%;
+  height: 300px;
+  justify-content: center;
+  align-items: center;
+}
+body main .inffo .inffo2 .turnOffCaf {
+  width: auto;
+  height: min-content;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+body main .inffo .inffo2 .turnOffCaf .collectTurnOffCaf {
+  appearance: none;
+  height: 35px;
+  min-width: 200px;
+  text-align: center;
+  background-color: white;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+body main .inffo .inffo2 .turnOffCaf .collectTurnOffCaf option {
+  text-align: center;
+  padding: 0 5px;
+}
+body main .inffo .inffo2 .turnOffCaf button {
+  width: 150px;
+  height: 35px;
+  border: none;
+  background-color: #28a745;
+  padding: 10px 20px;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 5px;
+  margin-top: 20px;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+body main .inffo .inffo2 .turnOffCaf button:hover {
+  opacity: 0.8;
+}
+body .graphic {
   width: 100%;
   height: auto;
   justify-content: center;
   align-items: center;
   flex-direction: column;
 }
-body main .graphic .sheet {
+body .graphic .sheet {
   background-color: rgb(255, 255, 255);
   width: 80%;
+  height: auto;
   flex-direction: column;
 }
-body main .graphic .sheet .herderSheet {
+body .graphic .sheet .herderSheet {
   width: 100%;
   height: 130px;
+  position: relative;
 }
-body main .graphic .sheet .herderSheet div {
+body .graphic .sheet .herderSheet div {
   justify-content: center;
   align-items: center;
 }
-body main .graphic .sheet .herderSheet .logo {
+body .graphic .sheet .herderSheet .logo {
   width: 30%;
   justify-content: flex-start;
   padding: 10px;
 }
-body main .graphic .sheet .herderSheet .logo .bgImage {
+body .graphic .sheet .herderSheet .logo .bgImage {
   width: 200px;
   height: 130px;
   background-image: url("../img/logoTotal.png");
@@ -257,85 +304,96 @@ body main .graphic .sheet .herderSheet .logo .bgImage {
   background-repeat: no-repeat;
   background-position: center;
 }
-body main .graphic .sheet .herderSheet .title {
+body .graphic .sheet .herderSheet .title {
   width: 40%;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
 }
-body main .graphic .sheet .herderSheet .title span:nth-child(1) {
+body .graphic .sheet .herderSheet .title span:nth-child(1) {
   font-size: 25px;
   font-weight: 600;
   color: #1E2348;
 }
-body main .graphic .sheet .herderSheet .title span:nth-child(2) {
+body .graphic .sheet .herderSheet .title span:nth-child(2) {
   font-size: 20px;
   font-weight: 600;
   color: #a80000;
 }
-body main .graphic .sheet .herderSheet .date {
+body .graphic .sheet .herderSheet .date {
   width: 30%;
   padding: 10px;
   justify-content: flex-end;
   align-items: flex-start;
 }
-body main .graphic .sheet .herderSheet .date span {
+body .graphic .sheet .herderSheet .date span {
   font-size: 20px;
   color: rgba(0, 0, 0, 0.8);
   font-weight: 600;
 }
-body main .graphic .sheet .mainSheet {
+body .graphic .sheet .herderSheet .logoProperty {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  right: 5px;
+  bottom: 0px;
+  background-image: url("../img/ASS.png");
+  background-size: 50px auto;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+body .graphic .sheet .mainSheet {
   width: 100%;
   height: auto;
   background-color: rgb(255, 255, 255);
   flex-direction: column;
 }
-body main .graphic .sheet .mainSheet .headerMainSheet {
+body .graphic .sheet .mainSheet .headerMainSheet {
   height: 30px;
   width: 100%;
   background-color: #1E2348;
 }
-body main .graphic .sheet .mainSheet .headerMainSheet div {
+body .graphic .sheet .mainSheet .headerMainSheet div {
   overflow: hidden;
   justify-content: center;
   align-items: center;
   border-left: solid 1px rgba(255, 255, 255, 0.2);
   border-right: solid 1px rgba(255, 255, 255, 0.2);
 }
-body main .graphic .sheet .mainSheet .headerMainSheet div span {
+body .graphic .sheet .mainSheet .headerMainSheet div span {
   font-weight: 600;
 }
-body main .graphic .sheet .mainSheet .headerMainSheet .bcRouter {
+body .graphic .sheet .mainSheet .headerMainSheet .bcRouter {
   width: 10%;
   height: 100%;
 }
-body main .graphic .sheet .mainSheet .headerMainSheet .bcAggregate {
+body .graphic .sheet .mainSheet .headerMainSheet .bcAggregate {
   width: 30%;
   height: 100%;
 }
-body main .graphic .sheet .mainSheet .headerMainSheet .bcCAF {
+body .graphic .sheet .mainSheet .headerMainSheet .bcCAF {
   width: 10%;
   height: 100%;
 }
-body main .graphic .sheet .mainSheet .headerMainSheet .bcAmount {
+body .graphic .sheet .mainSheet .headerMainSheet .bcAmount {
   width: 10%;
   height: 100%;
 }
-body main .graphic .sheet .mainSheet .headerMainSheet .bcState {
+body .graphic .sheet .mainSheet .headerMainSheet .bcState {
   width: 20%;
   height: 100%;
 }
-body main .graphic .sheet .mainSheet .headerMainSheet .bcSituation {
+body .graphic .sheet .mainSheet .headerMainSheet .bcSituation {
   width: 20%;
   height: 100%;
 }
-body main .graphic .sheet .mainSheet .added {
+body .graphic .sheet .mainSheet .added {
   min-height: 20px;
   width: 100%;
   background-color: #ffffff;
 }
-body main .graphic .sheet .mainSheet .added div {
+body .graphic .sheet .mainSheet .added div {
   overflow: hidden;
   align-items: center;
   justify-content: center;
@@ -343,7 +401,7 @@ body main .graphic .sheet .mainSheet .added div {
   border-left: solid 1px rgba(0, 0, 0, 0.2);
   border-right: solid 1px rgba(0, 0, 0, 0.2);
 }
-body main .graphic .sheet .mainSheet .added div span {
+body .graphic .sheet .mainSheet .added div span {
   align-items: center;
   justify-content: center;
   align-items: center;
@@ -352,64 +410,64 @@ body main .graphic .sheet .mainSheet .added div span {
   font-weight: 600;
   user-select: text;
 }
-body main .graphic .sheet .mainSheet .added .bcRouter {
+body .graphic .sheet .mainSheet .added .bcRouter {
   width: 10%;
   height: 100%;
 }
-body main .graphic .sheet .mainSheet .added .bcRouter span {
+body .graphic .sheet .mainSheet .added .bcRouter span {
   font-size: 18px;
 }
-body main .graphic .sheet .mainSheet .added .bcAggregate {
+body .graphic .sheet .mainSheet .added .bcAggregate {
   width: 30%;
   height: 100%;
 }
-body main .graphic .sheet .mainSheet .added .bcAggregate span {
+body .graphic .sheet .mainSheet .added .bcAggregate span {
   font-size: 13px;
 }
-body main .graphic .sheet .mainSheet .added .bcCAF {
+body .graphic .sheet .mainSheet .added .bcCAF {
   width: 10%;
   height: 100%;
 }
-body main .graphic .sheet .mainSheet .added .bcCAF span {
+body .graphic .sheet .mainSheet .added .bcCAF span {
   font-size: 14px;
 }
-body main .graphic .sheet .mainSheet .added .bcAmount {
+body .graphic .sheet .mainSheet .added .bcAmount {
   width: 10%;
   height: 100%;
 }
-body main .graphic .sheet .mainSheet .added .bcAmount span {
+body .graphic .sheet .mainSheet .added .bcAmount span {
   font-size: 18px;
 }
-body main .graphic .sheet .mainSheet .added .bcState {
+body .graphic .sheet .mainSheet .added .bcState {
   width: 20%;
   height: 100%;
 }
-body main .graphic .sheet .mainSheet .added .bcState span {
+body .graphic .sheet .mainSheet .added .bcState span {
   font-size: 16px;
 }
-body main .graphic .sheet .mainSheet .added .bcSituation {
+body .graphic .sheet .mainSheet .added .bcSituation {
   width: 20%;
   height: 100%;
 }
-body main .graphic .sheet .mainSheet .added .bcSituation span {
+body .graphic .sheet .mainSheet .added .bcSituation span {
   font-size: 16px;
 }
-body main .graphic .sheet .mainSheet .addedBG {
+body .graphic .sheet .mainSheet .addedBG {
   background-color: #dfdfdf;
 }
-body main .graphic .sheet .mainSheet .CL_inCAF div span {
+body .graphic .sheet .mainSheet .CL_inCAF div span {
   color: rgb(38, 65, 153);
 }
-body main .graphic .sheet .mainSheet .CL_inStreet div span {
+body .graphic .sheet .mainSheet .CL_inStreet div span {
   color: rgb(4, 148, 4);
 }
-body main .graphic .sheet .footerSheet {
+body .graphic .sheet .footerSheet {
   width: 100%;
   min-height: 50px;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
 }
-body main .graphic .sheet .footerSheet div {
+body .graphic .sheet .footerSheet div {
   height: 100%;
   width: 100%;
   background-color: #1E2348;
@@ -421,10 +479,10 @@ body main .graphic .sheet .footerSheet div {
   border-left: solid 1px rgba(255, 255, 255, 0.8);
   width: 25%;
 }
-body main .graphic .sheet .footerSheet div span {
+body .graphic .sheet .footerSheet div span {
   font-weight: 600;
 }
-body main .graphic .buttonDn {
+body .graphic .buttonDn {
   position: relative;
   width: 100%;
   padding: 10px;
@@ -433,7 +491,7 @@ body main .graphic .buttonDn {
   justify-content: center;
   align-items: center;
 }
-body main .graphic .buttonDn button {
+body .graphic .buttonDn button {
   width: 150px;
   border: none;
   background-color: #28a745;
@@ -445,19 +503,95 @@ body main .graphic .buttonDn button {
   cursor: pointer;
   margin-bottom: 20px;
 }
-body main .graphic .buttonDn button:hover {
+body .graphic .buttonDn button:hover {
   opacity: 0.8;
 }
-body main .graphic .buttonDn button:disabled {
+body .graphic .buttonDn button:disabled {
   cursor: default;
   background-color: rgb(32, 32, 32);
 }
-body main .graphic .buttonDn button:disabled:hover {
+body .graphic .buttonDn button:disabled:hover {
   opacity: 1;
 }
-body main .message {
+body .message {
   width: 100%;
+  align-items: center;
+  flex-direction: column;
+}
+body .message .box {
+  width: 90%;
   height: auto;
+  padding: 20px 10px;
+  margin: 10px 0;
+  border: solid 1px #36393f;
+  flex-direction: row;
+  justify-content: center;
+}
+body .message .box .msg {
+  position: relative;
+  padding: 10px;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  flex-direction: column;
+  width: 100%;
+}
+body .message .box .msg span {
+  color: #292b2f;
+}
+body .message .box .msg .text {
+  font-weight: 400;
+  line-height: 1;
+  font-size: 16px;
+  border: solid 1px #2f3136;
+  padding: 10px 40px;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: white;
+  color: black;
+}
+body .message .box .msg .copy {
+  display: none;
+  margin-top: 25px;
+  padding: 15px 30px;
+  border-radius: 5px;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #d6d7d9;
+}
+body .buttonDnDelete {
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+body .buttonDnDelete button {
+  width: 150px;
+  height: 40px;
+  border: none;
+  background-color: #FF2111;
+  padding: 10px 20px;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 5px;
+  margin-top: 20px;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+body .buttonDnDelete button:hover {
+  opacity: 0.8;
+}
+body .CRD {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  height: 20px;
+  width: 100%;
+}
+body .CRD a {
+  margin: 0;
+  padding-right: 5px;
 }
 
 .config {

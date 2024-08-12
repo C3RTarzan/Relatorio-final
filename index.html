@@ -76,7 +76,14 @@
         <main>
             <button class="help" onclick="redirectHelp()">AJUDA</button>
             <div class="inffo">
-
+                <div class="inffo2">
+                    <div class="turnOffCaf">
+                        <select class="collectTurnOffCaf">
+                            <option value="0">Escolher</option>
+                        </select>
+                        <button onclick='deleteData()'>Apagar</button>
+                    </div>
+                </div>
             </div>
             <div class="graphic">
                 <div class="sheet">
@@ -92,6 +99,8 @@
                         </div>
                         <div class="date">
                             <span>08/08</span>
+                        </div>
+                        <div class="logoProperty">
                         </div>
                     </div>
                     <div class="mainSheet">
@@ -117,57 +126,57 @@
                         </div>
                         <div class="added">
                             <div class="bcRouter">
-                                <span>01A</span>
+                                <span>000</span>
                             </div>
                             <div class="bcAggregate">
-                                <span>MARCONDES DE OLIVEIRA FEITOSA CARDOSO</span>
+                                <span>NOME DO AGREGADO</span>
                             </div>
                             <div class="bcCAF">
-                                <span>16372518</span>
+                                <span>00000000</span>
                             </div>
                             <div class="bcAmount">
-                                <span>158</span>
+                                <span>0</span>
                             </div>
                             <div class="bcState">
-                                <span>AUDITADA</span>
+                                <span>NULL</span>
                             </div>
                             <div class="bcSituation">
-                                <span>Confirmado</span>
+                                <span>NULL</span>
                             </div>
                         </div>
                         <div class="added addedBG">
                             <div class="bcRouter">
-                                <span>02A</span>
+                                <span>000</span>
                             </div>
                             <div class="bcAggregate">
-                                <span>MARCONDES DE OLIVEIRA FEITOSA CARDOSO</span>
+                                <span>NOME DO AGREGADO</span>
                             </div>
                             <div class="bcCAF">
-                                <span>16372518</span>
+                                <span>00000000</span>
                             </div>
                             <div class="bcAmount">
-                                <span>158</span>
+                                <span>0</span>
                             </div>
                             <div class="bcState">
-                                <span>AUDITADA</span>
+                                <span>NULL</span>
                             </div>
                             <div class="bcSituation">
-                                <span>Confirmado</span>
+                                <span>NULL</span>
                             </div>
                         </div>
                     </div>
                     <div class="footerSheet">
                         <div class="volumefooter">
-                            <span>VOLUMES EM CAF: 1520</span>
+                            <span>VOLUMES EM CAF: 0</span>
                         </div>
                         <div class="Madefooter">
-                            <span>CAF’S FEITAS: 12</span>
+                            <span>CAF’S FEITAS: 0</span>
                         </div>
                         <div class="auditedfooter">
-                            <span>CAF’S AUDITADA: 12</span>
+                            <span>CAF’S AUDITADA: 0</span>
                         </div>
                         <div class="issuedfooter">
-                            <span>CAF’S EXPEDIDAS: 12</span>
+                            <span>CAF’S EXPEDIDAS: 0</span>
                         </div>
                     </div>
                 </div>
@@ -176,15 +185,38 @@
                 </div>
             </div>
             <div class="message">
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
+                <div class="title">
+                    <span class="h1">Mensagem</span>
+                </div>
+                <div class="box">
+                    <div class="msg">
+                        <span class="text textcopy withGraphic" onclick="copy()" style="white-space: pre-line;">
+                            Bom-dia!<span style="display: none;">br</span>
+
+                            *Caf's feitas, auditadas e expedidas pelo 3° turno*<span style="display: none;">br</span>
+    
+                            Hoje *data*, foram feitas *quantidade* caf's, movimentado 
+                            *quantidade* peças para serem expedidas. <span style="display: none;">br</span>
+    
+                            Foram liberadas *quantidade* caf's um total de *quantidade* peças.<span style="display: none;">br</span>
+
+                            Recebemos na base um total de *quantidade* peças dos embarque ( *embarque* | *emarque* ).<span style="display: none;">br</span>
+
+                            @Wagner @Maria @Wellington @Luciano @Thallys @Kelvin @Emanuel <span style="display: none;">br</span>
+
+                            ~Alan H. Silva
+                        </span>
+                        <span class="copy" style="position: absolute;">Copiado</span>
+                    </div>
+                </div>
+            </div>
+            <div class="buttonDnDelete">
+                <button onclick="deleteDate()">Limpar</button>
+            </div>
+            <div class="CRD">
+                <a href="https://github.com/C3RTarzan" target="_blank">@PinkUppers</a> <span class="version">v0.6</span>
             </div>
         </main>
     </body>
 </body>
-
 </html>
