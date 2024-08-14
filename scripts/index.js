@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     updateDate()
 
-    createselectElement()
+    createSelectElement()
 
     createMessage()
 
@@ -29,140 +29,8 @@ document.addEventListener("DOMContentLoaded", function () {
     "RETIRADO DA CAF ANTERIOR" 
  */
 
-//: ----- Users name menu -----
-function configOpen() {
-    const config = document.querySelector(".config")
-    if (window.getComputedStyle(config).top === "-600px") {
-        config.style = "top: auto";
-    } else {
-        config.style = "top: -600px";
-    }
-}
-function addUser() {
-    const user = document.querySelector(".userADD").value.trim()
-    let userName = localStorage.getItem("Username");
-    let listUser
-    if (userName) {
-        listUser = userName + ', ' + user
-    } else {
-        listUser = user
-    }
-    if (user.length > 0) {
-        localStorage.setItem("Username", listUser)
-        getUser()
-        getName()
-        selectName()
-    }
-}
-function addUser() {
-    const user = document.querySelector(".userADD").value.trim()
-    let userName = localStorage.getItem("Username");
-    let listUser
-    if (userName) {
-        listUser = userName + ', ' + user
-    } else {
-        listUser = user
-    }
-    if (user.length > 0) {
-        localStorage.setItem("Username", listUser)
-        getUser()
-        getName()
-        selectName()
-    }
-}
-function getUser() {
-    const userName = localStorage.getItem("Username");
-    const listaNomesContainer = document.querySelector(".config .namesUsers");
-    listaNomesContainer.innerHTML = ''
-    if (userName) {
-
-        const listNames = userName.split(", ");
-        listNames.sort();
-
-        listNames.forEach(function (name) {
-            const divElement = document.createElement("div");
-
-            const spanElement = document.createElement("span");
-            spanElement.textContent = name;
-
-            const iconElement = document.createElement("iconify-icon");
-            iconElement.className = "iconDelet";
-            iconElement.onclick = function () {
-                deletUser(name);
-            };
-            iconElement.setAttribute("icon", "jam:delete-f");
-
-            divElement.appendChild(spanElement);
-            divElement.appendChild(iconElement);
-
-            listaNomesContainer.appendChild(divElement);
-        });
-    }
-}
-function deletUser(user) {
-    const userName = localStorage.getItem("Username");
-    if (isEmptyOrUndefined(userName)) return
-
-
-    const listNames = userName.split(", ");
-
-    const indexToDelete = listNames.indexOf(user);
-
-    if (indexToDelete !== -1) {
-        listNames.splice(indexToDelete, 1);
-
-        localStorage.setItem("Username", listNames.join(", "));
-
-        getUser()
-        getName()
-        selectName()
-    }
-}
-function getName() {
-    const userName = localStorage.getItem("Username");
-
-    if (isEmptyOrUndefined(userName)) return
-
-    const listNames = userName.split(", ");
-
-    listNames.sort();
-
-    const selectElement = document.querySelector(".collectSelectName");
-
-    const optionsToRemove = Array.from(selectElement.children).filter(option => option.value !== "0");
-    optionsToRemove.forEach(option => selectElement.removeChild(option));
-
-    if (userName) {
-        listNames.forEach(function (name, index) {
-            const newOption = document.createElement("option");
-            newOption.value = index + 1;
-            newOption.text = name.trim();
-            selectElement.add(newOption);
-        });
-    }
-}
-function selectName() {
-    const name = document.querySelector("#name")
-    const valueSelect = document.querySelector(".collectSelectName")
-
-    const selectedOption = valueSelect.options[valueSelect.selectedIndex];
-
-    const selectedValue = selectedOption.value;
-    const selectedText = selectedOption.text;
-
-    if (selectedValue > 0) {
-        name.value = selectedText
-        name.disabled = true
-    } else {
-        name.value = ""
-        name.disabled = false
-    }
-
-}
-//:----------------------------
-
-
 //: --- Main ---
+
 function getData() {
     console.log("Loading..."); //? Console Debugging
     const mainData = document.querySelector("#data1").value; //@ Get data from part
@@ -189,7 +57,7 @@ function getData() {
 
     createTable(orders, values)
 
-    createselectElement()
+    createSelectElement()
 
     createMessage()
 
@@ -383,8 +251,8 @@ function getCafs(data) {
     }
 
     const atTheBase = ["DESCARREGADO", "RECEBIDO CD DE: - FOR"];
-    const inCAF = ["EM ROTA", "EM TRANSFERÊNCIA SECUNDÁRIA"];
-    const inStreet = ["ENTREGA REALIZADA", "PROCESSO DE ENTREGA"];
+    const inCAF = ["EM ROTA"];
+    const inStreet = ["ENTREGA REALIZADA", "PROCESSO DE ENTREGA", "EM TRANSFERÊNCIA SECUNDÁRIA"];
 
     const groupedData = dataParts.reduce((acc, item) => {
         const { AWB, router, boarding, CAF, state, driver, ticket } = item;
@@ -610,6 +478,11 @@ function getValues(data, values) {
     };
 }
 
+//:-------------
+
+
+//:---TableControl----
+
 function createTable(data, data2) {
     if (isEmptyOrUndefined(data) && isEmptyOrUndefined(data2)) return
 
@@ -631,7 +504,7 @@ function createTable(data, data2) {
         } else if (item.state === "inStreet") {
             stateItem = "Na Rua"
         } else if (item.state === "atTheBase") {
-            stateItem = "Em base"
+            stateItem = "BackLog"
         } else {
             stateItem = item.state
         }
@@ -677,7 +550,6 @@ function createTable(data, data2) {
     footerSheet.querySelector(".auditedfooter span").innerHTML = `CAF’S AUDITADA: ${data2.auditedCAFs}`;
     footerSheet.querySelector(".issuedfooter span").innerHTML = `CAF’S EXPEDIDAS: ${data2.dispatchedCAFs}`;
 }
-
 function deleteData() {
     const select = document.querySelector(".collectTurnOffCaf").value;
 
@@ -697,16 +569,273 @@ function deleteData() {
         errorHandling("Erro ao apagar Item.")
     }
 
-    createselectElement();
+    createSelectElement();
 
     createMessage()
 
 }
+function editOpen(){
+    const select = document.querySelector(".collectTurnOffCaf").value;
+    if (isEmptyOrUndefined(select)) return
 
-//:-------------
+    if (select === '0' || select === '00000000') {
+        errorHandling("Valor invalido para ser editado.");
+        return;
+    }
+
+    const config = document.querySelector(".editUsers")
+    
+    if (window.getComputedStyle(config).display === "none") {
+        config.style = "display: flex";
+        buttonEdit();
+        editCAF(select)
+    }
+
+    
+}
+function editClosed(){
+    // Hides the editing interface
+    document.querySelector(".editUsers").style = "display: none";
+
+    buttonEdit()
+}
+function editCAF(select){
+    if (isEmptyOrUndefined(localStorage.getItem("main")) || isEmptyOrUndefined(localStorage.getItem("value"))) return;
+    
+    const editCafValue = document.querySelector(".editCafValue");
+    const nameEdit = document.querySelector(".nameEdit");
+    const stateEdit = document.querySelector(".stateEdit");
+    const ticketEdit = document.querySelector(".ticketEdit");
+
+
+    const main = localStorage.getItem('main');
+    const myObjectMain = JSON.parse(main);
+
+    
+    const updatedMain = myObjectMain.filter(item => item.CAF === select)[0];
+
+    if(updatedMain){
+        nameEdit.value = updatedMain.driver
+        
+        const optionExistsState = Array.from(stateEdit.options).some(option => option.value === updatedMain.state);
+        if(optionExistsState){
+            stateEdit.value = updatedMain.state
+        }else{
+            stateEdit.value = 'atTheBase'
+        }
+
+        const optionExistsTicket = Array.from(ticketEdit.options).some(option => option.value === updatedMain.ticket);
+        if(optionExistsTicket){
+            ticketEdit.value = updatedMain.ticket
+        }else{
+            ticketEdit.value = "undefined"
+        }
+
+        editCafValue.innerHTML = `Editar CAF: ${updatedMain.CAF}  [ ${updatedMain.router} ]`     
+    }
+
+    
+}
+function editUser() {
+    if (isEmptyOrUndefined(localStorage.getItem("main")) || isEmptyOrUndefined(localStorage.getItem("value"))) return;
+
+    const CAF = document.querySelector(".collectTurnOffCaf").value;
+    const nameEdit = document.querySelector(".nameEdit").value;
+    const stateEdit = document.querySelector(".stateEdit").value;
+    const ticketEdit = document.querySelector(".ticketEdit").value;
+
+    let main = localStorage.getItem('main');
+    let myObjectMain = JSON.parse(main);
+
+    let value = localStorage.getItem('value');
+    let myObjectValue = JSON.parse(value);
+
+    // findsTheCorrespondingCafObjectInMyobjectMain
+    const cafIndex = myObjectMain.findIndex(item => item.CAF === CAF);
+
+    if (cafIndex !== -1) {
+        const updatedMain = myObjectMain[cafIndex];
+
+        // checksAndUpdatesTheDriver
+        if (updatedMain.driver !== nameEdit) {
+            updatedMain.driver = nameEdit;
+        }
+
+        // checkAndUpdateTheState
+        if (updatedMain.state !== stateEdit) {
+            // updateDispatchedCafeOnTheMyObjectValueObject
+            if (stateEdit === "inStreet" && updatedMain.state !== "inStreet") {
+                myObjectValue.dispatchedCAFs += 1;
+            } else if ((stateEdit === "inCAF" || stateEdit === "atTheBase") && updatedMain.state === "inStreet") {
+                myObjectValue.dispatchedCAFs -= 1;
+            }
+
+            updatedMain.state = stateEdit;
+        }
+
+        // checkAndUpdateTheTicket
+        if (updatedMain.ticket !== ticketEdit) {
+            // updatesAuditedcafsOnTheMyobjectvaluObjecte
+            if (ticketEdit === "audited" && updatedMain.ticket !== "audited") {
+                myObjectValue.auditedCAFs += 1;
+            } else if (updatedMain.ticket === "audited" && (ticketEdit === "notAuthenticated" || ticketEdit === "undefined")) {
+                myObjectValue.auditedCAFs -= 1;
+            }
+
+            updatedMain.ticket = ticketEdit;
+        }
+
+        // updatesTheMainObjectWithTheNewChanges
+        myObjectMain[cafIndex] = updatedMain;
+
+        // Saves updated objects in LocalStorage
+        localStorage.setItem('main', JSON.stringify(myObjectMain));
+        localStorage.setItem('value', JSON.stringify(myObjectValue));
+
+        // updatesTheIuOrPerformsOtherNecessaryFunctions
+        getLocalStorage();
+        createSelectElement();
+        createMessage();
+        editClosed()
+    } else {
+        errorHandling(`CAF ${CAF} não encontrado em myObjectMain.`)
+    }
+}
+function deleteDate() {
+    localStorage.removeItem('main');
+    localStorage.removeItem('value');
+    const sheet = document.querySelector(".sheet")
+    sheet.innerHTML = `
+        <div class="herderSheet">
+            <div class="logo">
+                <div class="bgImage">
+                    
+                </div>
+            </div>
+            <div class="title">
+                <span>RELATÓRIO DE CONTROLE</span>
+                <span>TERCEIRO TURNO</span>
+            </div>
+            <div class="date">
+                <span>08/08</span>
+            </div>
+            <div class="logoProperty">
+            </div>
+        </div>
+        <div class="mainSheet">
+            <div class="headerMainSheet">
+                <div class="bcRouter">
+                    <span>ROTA</span>
+                </div>
+                <div class="bcAggregate">
+                    <span>AGREGADO</span>
+                </div>
+                <div class="bcCAF">
+                    <span>CAF</span>
+                </div>
+                <div class="bcAmount">
+                    <span>QTD</span>
+                </div>
+                <div class="bcState">
+                    <span>STATUS</span>
+                </div>
+                <div class="bcSituation">
+                    <span>SITUAÇÃO</span>
+                </div>
+            </div>
+            <div class="added">
+                <div class="bcRouter">
+                    <span>000</span>
+                </div>
+                <div class="bcAggregate">
+                    <span>NOME DO AGREGADO</span>
+                </div>
+                <div class="bcCAF">
+                    <span>00000000</span>
+                </div>
+                <div class="bcAmount">
+                    <span>0</span>
+                </div>
+                <div class="bcState">
+                    <span>NULL</span>
+                </div>
+                <div class="bcSituation">
+                    <span>NULL</span>
+                </div>
+            </div>
+            <div class="added addedBG">
+                <div class="bcRouter">
+                    <span>000</span>
+                </div>
+                <div class="bcAggregate">
+                    <span>NOME DO AGREGADO</span>
+                </div>
+                <div class="bcCAF">
+                    <span>00000000</span>
+                </div>
+                <div class="bcAmount">
+                    <span>0</span>
+                </div>
+                <div class="bcState">
+                    <span>NULL</span>
+                </div>
+                <div class="bcSituation">
+                    <span>NULL</span>
+                </div>
+            </div>
+        </div>
+        <div class="footerSheet">
+            <div class="volumefooter">
+                <span>VOLUMES EM CAF: 0</span>
+            </div>
+            <div class="Madefooter">
+                <span>CAF’S FEITAS: 0</span>
+            </div>
+            <div class="auditedfooter">
+                <span>CAF’S AUDITADA: 0</span>
+            </div>
+            <div class="issuedfooter">
+                <span>CAF’S EXPEDIDAS: 0</span>
+            </div>
+        </div>
+    `;
+    const message = document.querySelector('.message');
+    message.innerHTML = `
+        <div class="title">
+            <span class="h1">Mensagem</span>
+        </div>
+        <div class="box">
+            <div class="msg">
+                <span class="text textcopy withGraphic" onclick="copy()" style="white-space: pre-line;">
+                    Bom-dia!<span style="display: none;">br</span>
+
+                    *Caf's feitas, auditadas e expedidas pelo 3° turno*<span style="display: none;">br</span>
+
+                    Hoje *data*, foram feitas *quantidade* caf's, movimentado 
+                    *quantidade* peças para serem expedidas. <span style="display: none;">br</span>
+
+                    Foram liberadas *quantidade* caf's um total de *quantidade* peças.<span style="display: none;">br</span>
+
+                    Recebemos na base um total de *quantidade* peças dos embarque ( *embarque* | *emarque* ).<span style="display: none;">br</span>
+
+                    @Wagner @Maria @Wellington @Luciano @Thallys @Kelvin @Emanuel <span style="display: none;">br</span>
+
+                    ~Alan H. Silva
+                </span>
+                <span class="copy" style="position: absolute;">Copiado</span>
+            </div>
+        </div>
+    `
+
+    updateDate()
+    createSelectElement()
+}
+
+//:------------------
 
 
 //: --- Helps ---
+
 function redirectHelp() {
     const path = window.location.href;
     const lastIndex = path.lastIndexOf("/");
@@ -957,7 +1086,7 @@ function copy() {
             errorHandling('Erro ao copiar o texto ', err)
         });
 }
-function createselectElement() {
+function createSelectElement() {
     // Selects all .added elements within .mainsheet
     const addedElements = document.querySelectorAll('.mainSheet .added');
 
@@ -1005,6 +1134,11 @@ function createMessage() {
     const value = localStorage.getItem('value');
     const myObjectValue = JSON.parse(value);
 
+    const today = new Date();
+    const day = String(today.getDate()).padStart(2, '0'); // Add zero to the left if necessary
+    const month = String(today.getMonth() + 1).padStart(2, '0'); // January is 0
+    const formattedDate = `${day}/${month}`;
+
     const mensagemHTML = `
         <div class="msg">
             <span class="text textcopy withGraphic" onclick="copy()" style="white-space: pre-line;">
@@ -1012,7 +1146,7 @@ function createMessage() {
 
                 *Caf's feitas, auditadas e expedidas pelo 3° turno*<span style="display: none;">br</span>
 
-                Hoje *data*, foram feitas *${myObjectValue.totalCAFs}* caf's, movimentado 
+                Hoje *${formattedDate}*, foram feitas *${myObjectValue.totalCAFs}* caf's, movimentado 
                 *${myObjectValue.volumesInCAF}* peças para serem expedidas. <span style="display: none;">br</span>
 
                 Foram expedidas *${myObjectValue.dispatchedCAFs}* caf's<span style="display: none;">br</span>
@@ -1033,133 +1167,161 @@ function createMessage() {
         errorHandling("Elemento .msg não encontrado para inserir a mensagem.");
     }
 }
-function deleteDate() {
-    localStorage.removeItem('main');
-    localStorage.removeItem('value');
-    const sheet = document.querySelector(".sheet")
-    sheet.innerHTML = `
-        <div class="herderSheet">
-            <div class="logo">
-                <div class="bgImage">
-                    
-                </div>
-            </div>
-            <div class="title">
-                <span>RELATÓRIO DE CONTROLE</span>
-                <span>TERCEIRO TURNO</span>
-            </div>
-            <div class="date">
-                <span>08/08</span>
-            </div>
-            <div class="logoProperty">
-            </div>
-        </div>
-        <div class="mainSheet">
-            <div class="headerMainSheet">
-                <div class="bcRouter">
-                    <span>ROTA</span>
-                </div>
-                <div class="bcAggregate">
-                    <span>AGREGADO</span>
-                </div>
-                <div class="bcCAF">
-                    <span>CAF</span>
-                </div>
-                <div class="bcAmount">
-                    <span>QTD</span>
-                </div>
-                <div class="bcState">
-                    <span>STATUS</span>
-                </div>
-                <div class="bcSituation">
-                    <span>SITUAÇÃO</span>
-                </div>
-            </div>
-            <div class="added">
-                <div class="bcRouter">
-                    <span>000</span>
-                </div>
-                <div class="bcAggregate">
-                    <span>NOME DO AGREGADO</span>
-                </div>
-                <div class="bcCAF">
-                    <span>00000000</span>
-                </div>
-                <div class="bcAmount">
-                    <span>0</span>
-                </div>
-                <div class="bcState">
-                    <span>NULL</span>
-                </div>
-                <div class="bcSituation">
-                    <span>NULL</span>
-                </div>
-            </div>
-            <div class="added addedBG">
-                <div class="bcRouter">
-                    <span>000</span>
-                </div>
-                <div class="bcAggregate">
-                    <span>NOME DO AGREGADO</span>
-                </div>
-                <div class="bcCAF">
-                    <span>00000000</span>
-                </div>
-                <div class="bcAmount">
-                    <span>0</span>
-                </div>
-                <div class="bcState">
-                    <span>NULL</span>
-                </div>
-                <div class="bcSituation">
-                    <span>NULL</span>
-                </div>
-            </div>
-        </div>
-        <div class="footerSheet">
-            <div class="volumefooter">
-                <span>VOLUMES EM CAF: 0</span>
-            </div>
-            <div class="Madefooter">
-                <span>CAF’S FEITAS: 0</span>
-            </div>
-            <div class="auditedfooter">
-                <span>CAF’S AUDITADA: 0</span>
-            </div>
-            <div class="issuedfooter">
-                <span>CAF’S EXPEDIDAS: 0</span>
-            </div>
-        </div>
-    `;
-    const message = document.querySelector('.message');
-    message.innerHTML = `
-        <div class="title">
-            <span class="h1">Mensagem</span>
-        </div>
-        <div class="box">
-            <div class="msg">
-                <span class="text textcopy withGraphic" onclick="copy()" style="white-space: pre-line;">
-                    Bom-dia!<span style="display: none;">br</span>
+function buttonEdit(){
+    const button = document.querySelectorAll("button");
+    const select = document.querySelectorAll(".collectTurnOffCaf")
 
-                    *Caf's feitas, auditadas e expedidas pelo 3° turno*<span style="display: none;">br</span>
-
-                    Hoje *data*, foram feitas *quantidade* caf's, movimentado 
-                    *quantidade* peças para serem expedidas. <span style="display: none;">br</span>
-
-                    Foram liberadas *quantidade* caf's um total de *quantidade* peças.<span style="display: none;">br</span>
-
-                    Recebemos na base um total de *quantidade* peças dos embarque ( *embarque* | *emarque* ).<span style="display: none;">br</span>
-
-                    @Wagner @Maria @Wellington @Luciano @Thallys @Kelvin @Emanuel <span style="display: none;">br</span>
-
-                    ~Alan H. Silva
-                </span>
-                <span class="copy" style="position: absolute;">Copiado</span>
-            </div>
-        </div>
-    `
-
-    updateDate()
-    createselectElement()
+    const editUsers = document.querySelector(".editUsers")
+    for(let i = 0; i < button.length; i++) {
+        if (window.getComputedStyle(editUsers).display === "none") {
+            button[i].disabled = false
+        }else{
+            button[i].disabled = true
+        }
+    }
+    for(let i = 0; i < select.length; i++) {
+        if (window.getComputedStyle(editUsers).display === "none") {
+            select[i].disabled = false
+        }else{
+            select[i].disabled = true
+        }
+    }
+    document.querySelector(".buttonSave").disabled = false
 }
+
 //:-------------
+
+
+//: ----- Users name menu -----
+
+function configOpen() {
+    const config = document.querySelector(".config")
+    if (window.getComputedStyle(config).display === "none") {
+        config.style = "display: flex";
+    } else {
+        config.style = "display: none";
+    }
+}
+function addUser() {
+    const user = document.querySelector(".userADD").value.trim()
+    let userName = localStorage.getItem("Username");
+    let listUser
+    if (userName) {
+        listUser = userName + ', ' + user
+    } else {
+        listUser = user
+    }
+    if (user.length > 0) {
+        localStorage.setItem("Username", listUser)
+        getUser()
+        getName()
+        selectName()
+    }
+}
+function addUser() {
+    const user = document.querySelector(".userADD").value.trim()
+    let userName = localStorage.getItem("Username");
+    let listUser
+    if (userName) {
+        listUser = userName + ', ' + user
+    } else {
+        listUser = user
+    }
+    if (user.length > 0) {
+        localStorage.setItem("Username", listUser)
+        getUser()
+        getName()
+        selectName()
+    }
+}
+function getUser() {
+    const userName = localStorage.getItem("Username");
+    const listaNomesContainer = document.querySelector(".config .namesUsers");
+    listaNomesContainer.innerHTML = ''
+    if (userName) {
+
+        const listNames = userName.split(", ");
+        listNames.sort();
+
+        listNames.forEach(function (name) {
+            const divElement = document.createElement("div");
+
+            const spanElement = document.createElement("span");
+            spanElement.textContent = name;
+
+            const iconElement = document.createElement("iconify-icon");
+            iconElement.className = "iconDelet";
+            iconElement.onclick = function () {
+                deletUser(name);
+            };
+            iconElement.setAttribute("icon", "jam:delete-f");
+
+            divElement.appendChild(spanElement);
+            divElement.appendChild(iconElement);
+
+            listaNomesContainer.appendChild(divElement);
+        });
+    }
+}
+function deletUser(user) {
+    const userName = localStorage.getItem("Username");
+    if (isEmptyOrUndefined(userName)) return
+
+
+    const listNames = userName.split(", ");
+
+    const indexToDelete = listNames.indexOf(user);
+
+    if (indexToDelete !== -1) {
+        listNames.splice(indexToDelete, 1);
+
+        localStorage.setItem("Username", listNames.join(", "));
+
+        getUser()
+        getName()
+        selectName()
+    }
+}
+function getName() {
+    const userName = localStorage.getItem("Username");
+
+    if (isEmptyOrUndefined(userName)) return
+
+    const listNames = userName.split(", ");
+
+    listNames.sort();
+
+    const selectElement = document.querySelector(".collectSelectName");
+
+    const optionsToRemove = Array.from(selectElement.children).filter(option => option.value !== "0");
+    optionsToRemove.forEach(option => selectElement.removeChild(option));
+
+    if (userName) {
+        listNames.forEach(function (name, index) {
+            const newOption = document.createElement("option");
+            newOption.value = index + 1;
+            newOption.text = name.trim();
+            selectElement.add(newOption);
+        });
+    }
+}
+function selectName() {
+    const name = document.querySelector("#name")
+    const valueSelect = document.querySelector(".collectSelectName")
+
+    const selectedOption = valueSelect.options[valueSelect.selectedIndex];
+
+    const selectedValue = selectedOption.value;
+    const selectedText = selectedOption.text;
+
+    if (selectedValue > 0) {
+        name.value = selectedText
+        name.disabled = true
+    } else {
+        name.value = ""
+        name.disabled = false
+    }
+
+}
+
+//:----------------------------

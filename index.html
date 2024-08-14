@@ -25,15 +25,45 @@
     <body>
         <div class="config">
             <iconify-icon onclick="configOpen()" class="iconClosed" icon="ph:x-circle-fill"></iconify-icon>
-            <div class="namesUsers">
-
+            <div class="headerConfig">
+                <div class="UserName">
+                    <span>Usuário</span>
+                </div>
             </div>
-            <div class="nameAdd">
-                <form action="" onsubmit="return false">
-                    <span>Nome</span>
-                    <input type="text" class="userADD" placeholder="Digite seu Nome">
-                    <button onclick="addUser()">Adicionar</button>
-                </form>
+            <div class="mainConfig">
+                <div class="UsersConfig">
+
+                    <div class="namesUsers">
+        
+                    </div>
+                    <div class="nameAdd">
+                        <form action="" onsubmit="return false">
+                            <span>Nome</span>
+                            <input type="text" class="userADD" placeholder="Digite seu Nome">
+                            <button onclick="addUser()">Adicionar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="editUsers">
+            <iconify-icon onclick="editClosed()" class="iconClosed" icon="ph:x-circle-fill"></iconify-icon>
+            <div class="mainEdit">
+                <span class="editCafValue">Editar CAF: 000000</span>
+                <div class="inputEdit">
+                    <input type="text" class="nameEdit" placeholder="Nome do Colaborador">
+                    <select class="stateEdit">
+                        <option value="inCAF">Em CAF</option>
+                        <option value="inStreet">Na Rua</option>
+                        <option value="atTheBase">BackLog</option>
+                    </select>
+                    <select class="ticketEdit" id="">
+                        <option value="audited">Auditada</option>
+                        <option value="notAuthenticated">Não Auditado</option>
+                        <option value="undefined">Indefinido</option>
+                    </select>
+                </div>
+                <button class="buttonSave" onclick="editUser()">Salvar</button>
             </div>
         </div>
         <header>
@@ -81,7 +111,8 @@
                         <select class="collectTurnOffCaf">
                             <option value="0">Escolher</option>
                         </select>
-                        <button onclick='deleteData()'>Apagar</button>
+                        <button class="buttonInffo" onclick='editOpen()'>Editar</button>
+                        <button class="buttonInffo" onclick='deleteData()'>Apagar</button>
                     </div>
                 </div>
             </div>
@@ -211,10 +242,10 @@
                 </div>
             </div>
             <div class="buttonDnDelete">
-                <button onclick="deleteDate()">Limpar</button>
+                <button class="deleteAll" onclick="deleteDate()">Limpar</button>
             </div>
             <div class="CRD">
-                <a href="https://github.com/C3RTarzan" target="_blank">@PinkUppers</a> <span class="version">v0.6</span>
+                <a href="https://github.com/C3RTarzan" target="_blank">@PinkUppers</a> <span class="version">v0.7</span>
             </div>
         </main>
     </body>

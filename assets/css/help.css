@@ -61,7 +61,7 @@ span {
   margin: 10px;
   border: none;
   border-radius: 5px;
-  background-color: #3545f3;
+  background-color: #242fad;
   color: white;
   font-weight: 600;
   cursor: pointer;
@@ -98,6 +98,15 @@ textarea {
   color: #d6d7d9;
   padding: 5px;
   border-radius: 5px;
+}
+
+button:disabled {
+  opacity: 0.5 !important;
+  background-color: #36393f !important;
+}
+button:disabled:hover {
+  opacity: 0.5 !important;
+  cursor: default !important;
 }
 
 .help {
