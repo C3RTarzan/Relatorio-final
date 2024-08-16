@@ -210,16 +210,17 @@ function mainWithCAF(dataMain, dataSec) {
 }
 
 function TicketChecker(dataMain, dataTicket) {
-
     if (isEmptyOrUndefined(dataMain)) return;
+
+    // Filters Dataticket items to keep only those whose ticket starts with "Encomenda auditada - 5"
+    const filteredTickets = (dataTicket || []).filter(ticketItem =>
+        ticketItem.ticket.startsWith("Encomenda auditada - 5")
+    );
 
     // Itera about each item in Datamain
     return dataMain.map(mainItem => {
-        // Finds the corresponding item in Dataticket with the same AWB
-        let ticketItem = false
-        if (!(dataTicket === '' || dataTicket === undefined)) {
-            ticketItem = dataTicket.find(ticketItem => ticketItem.AWB === mainItem.AWB);
-        }
+        // Finds the corresponding item in FilteredTickets with the same AWB
+        let ticketItem = filteredTickets.find(ticketItem => ticketItem.AWB === mainItem.AWB);
 
         // If you found a corresponding item, check the ticket message
         if (ticketItem) {
@@ -229,17 +230,14 @@ function TicketChecker(dataMain, dataTicket) {
                 mainItem.ticket = "notAuthenticated";
             }
         } else {
-            // If you have not found a corresponding item, it defines it as "Notauthenticated"
-            if (dataTicket === undefined || dataTicket === '') {
-                mainItem.ticket = "undefined"
-            } else {
-                mainItem.ticket = "notAuthenticated";
-            }
+            // If you have not found a corresponding item, it defines it as "Notauthenticated" or "UNDEFINED"
+            mainItem.ticket = (dataTicket === undefined || dataTicket === '') ? "undefined" : "notAuthenticated";
         }
 
         return mainItem;
     });
 }
+
 
 function getCafs(data) {
     if (isEmptyOrUndefined(data)) return
@@ -266,7 +264,7 @@ function getCafs(data) {
                 states: {},
                 drivers: new Set(),
                 boardings: new Set(),
-                ticket: ticket
+                tickets: new Set()
             };
         }
 
@@ -284,6 +282,7 @@ function getCafs(data) {
 
         acc[CAF].drivers.add(driver);
         acc[CAF].boardings.add(boarding);
+        acc[CAF].tickets.add(ticket);
         return acc;
 
     }, {});
@@ -291,7 +290,7 @@ function getCafs(data) {
     const result = {};
 
     for (const [CAF, value] of Object.entries(groupedData)) {
-        const { AWBS, routers, states, drivers, boardings, ticket } = value;
+        const { AWBS, routers, states, drivers, boardings, tickets } = value;
 
         // Determine the most frequent router
         let mostFrequentRouter = Object.entries(routers).reduce((a, b) => (b[1] > a[1] ? b : a))[0];
@@ -314,6 +313,9 @@ function getCafs(data) {
         const mostFrequentState = Object.entries(stateCounts).reduce((a, b) => (b[1] > a[1] ? b : a))[0];
         const stateValue = stateCounts[mostFrequentState] > 0 ? mostFrequentState : 'undefined';
 
+        // Determine the ticket status, prioritizing "audited"
+        const ticketValue = tickets.has('audited') ? 'audited' : Array.from(tickets).find(ticket => ticket !== 'audited') || 'undefined';
+
         result[CAF] = {
             CAF: CAF,
             AWBS: Array.from(AWBS),
@@ -322,7 +324,7 @@ function getCafs(data) {
             state: stateValue,
             driver: Array.from(drivers)[0], // Assuming driver is the same for all entries in a CAF
             boarding: Array.from(boardings),
-            ticket: ticket
+            ticket: ticketValue
         };
     }
 
